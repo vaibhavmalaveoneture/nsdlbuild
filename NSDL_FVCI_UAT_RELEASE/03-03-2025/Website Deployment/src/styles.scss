@@ -1,0 +1,101 @@
+@import "primeicons/primeicons.css";
+
+html {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+body {
+  margin: 0;
+  overscroll-behavior-x: contain;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* 🔹 Custom styling for ConfirmDialog */
+.confirm-dialog .p-dialog-header {
+  font-weight: bold;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.confirm-dialog .p-dialog-content {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #333;
+}
+
+.confirm-dialog .p-confirm-dialog-icon {
+  font-size: 1.5rem;
+}
+
+/* 🔹 Spacing utilities for buttons & icons */
+.me-1 {
+  margin-right: 0.5rem !important;
+}
+
+.me-2 {
+  margin-right: 1rem !important;
+}
+
+.ms-1 {
+  margin-left: 0.5rem !important;
+}
+
+.ms-2 {
+  margin-left: 1rem !important;
+}
+
+/* 🔹 Button styles */
+.p-button-sm {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+.p-button-outlined {
+  border: 1px solid;
+  background: transparent;
+  transition: 0.3s;
+}
+
+.p-button-outlined:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.p-confirmdialog-icon {
+  width: 4rem !important;
+  margin-left: 1rem;
+}
+
+.confirm-text {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 0.3rem;
+}
+
+/* 🔹 User Details - Ensures Proper Spacing */
+.confirm-user {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: #222;
+  margin-bottom: 0.2rem;
+}
+
+.p-error {
+  margin-top: 0;
+  color: red !important;
+  margin-bottom: 0;
+  margin-top: 5px;
+}

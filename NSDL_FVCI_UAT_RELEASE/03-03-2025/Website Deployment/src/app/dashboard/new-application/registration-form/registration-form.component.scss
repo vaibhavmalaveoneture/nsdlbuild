@@ -1,0 +1,266 @@
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 3rem;
+}
+
+.input-item {
+  margin: 0.5rem 0 1rem;
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.form-header span {
+  color: #000;
+  font-weight: 500;
+  color: #344054;
+  font-size: 18px;
+}
+
+.form-header p {
+  margin-top: 0;
+  color: #6b778c;
+  font-size: 12px;
+}
+
+#form-title {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+.wrapper,
+.radio,
+.income-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.wrapper img {
+  height: 24px;
+  width: 24px;
+}
+
+input {
+  width: 100%;
+}
+
+.input-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5rem;
+}
+
+.td-wrapper,
+.address-text,
+.residence,
+.last-item {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.error {
+  font-weight: 500;
+  color: red;
+}
+
+.office,
+.address,
+.applicable {
+  display: flex;
+  align-items: center !important;
+  gap: 3rem;
+  margin: 1rem 0;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* ::ng-deep .p-datatable-tbody > tr > td,
+  .p-datatable-sort-icon,
+  .p-datatable-sort-badge,
+  ::ng-deep .p-datatable-thead > tr > th,
+  .p-datatable-sort-icon,
+  .p-datatable-sort-badge {
+    text-align: center !important;
+  } */
+
+.full-width {
+  width: 70%;
+}
+
+#table-text {
+  width: 50%;
+}
+
+#add {
+  text-align: right;
+  border-left: none;
+}
+
+::ng-deep .p-button-label {
+  font-size: 0.7rem;
+}
+
+::ng-deep .p-scrollpanel-bar {
+  background: grey !important;
+}
+
+::ng-deep .registration-card > .p-card {
+  background-color: #f4f5f7;
+  margin-top: 7rem;
+  position: fixed;
+  margin-right: 2rem;
+  width: -webkit-fill-available;
+}
+
+.registration-card form {
+  background-color: #fff;
+  padding: 1.5rem 3rem;
+  border: 1px solid #cfd3d4;
+  border-radius: 8px;
+}
+
+.card-wrapper {
+  margin-left: 1rem;
+}
+
+.input-group label span {
+  color: #8f1709;
+}
+
+.wrapper a {
+  color: #2c3e5d;
+  font-size: 12px;
+}
+
+::ng-deep .p-card-title {
+  font-size: 18px;
+}
+
+/* .input-group {
+    margin-bottom: 1.5rem;
+  } */
+
+.input-group label {
+  color: #666666;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.input-group .input-item label {
+  font-weight: semi-bold;
+}
+
+.input-grid .input-item input {
+  margin-top: 0.75rem;
+}
+
+#owner,
+.condition,
+.residence,
+.income-item {
+  margin: 1rem 0 1rem 2rem;
+}
+
+.condition,
+.expandable {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.income-item label {
+  width: 35%;
+}
+
+.chose {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  justify-content: space-evenly;
+}
+
+#next {
+  display: flex;
+  justify-content: center;
+  margin: 4rem 0 2rem;
+}
+
+#next-btn {
+  font-size: 1rem;
+  padding: 0.7rem;
+  width: 90%;
+  font-weight: 400;
+}
+
+::ng-deep .p-accordionheader {
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 0px !important;
+  border-bottom: none !important;
+}
+
+::ng-deep .p-accordioncontent-content {
+  padding: 0 !important;
+}
+
+.table-header > th {
+  border-top: 0;
+}
+::ng-deep .p-button-icon-only {
+  background: transparent !important;
+  color: #000 !important;
+  border-radius: 50%;
+  border: 1px solid #000 !important;
+  padding: 0 !important;
+  height: 30px !important;
+  width: 30px !important;
+  margin-left: 5px;
+}
+
+#action-btns {
+  padding: 5px;
+}
+
+.applicant-type,
+.other-entity {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3rem;
+  margin: 1rem 0;
+}
+
+.other-entity label {
+  width: 100%;
+}
+
+.existing-pan label {
+  width: 40%;
+  font-weight: 400;
+}
+
+textarea {
+  border: 1px solid #cfd3d4;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  padding: 1rem;
+  outline: none;
+  border-radius: 8px;
+  margin-bottom: 5rem;
+}
+
+.sub-labels {
+  font-weight: 400 !important;
+  color: #334155 !important;
+}

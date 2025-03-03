@@ -1,0 +1,101 @@
+.sws {
+  padding: 3rem 5rem;
+  background-color: #e6c2bf;
+}
+
+.sws h1 {
+  color: #8f1709;
+  border-bottom: 1px solid #8f1709;
+  padding: 1.5rem 0;
+  font-size: 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.sws a {
+  font-size: 20px;
+  font-weight: 400;
+  text-decoration: underline;
+}
+
+.sws-grid,
+.sws-grid-items {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3rem;
+  align-items: center;
+}
+
+.sws-grid-items p {
+  color: #8590a2;
+}
+
+.sws-grid-items a {
+  color: #8f1709;
+  font-size: 1rem;
+}
+
+.sws-icons {
+  width: 80px;
+  height: 80px;
+}
+
+::ng-deep .p-card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4rem;
+}
+
+@media screen and (max-width: 1200px) {
+  .sws-wrapper img {
+    height: 70%;
+    width: 70%;
+  }
+
+  .sws-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .sws-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .sws-wrapper img {
+    height: 60%;
+    width: 60%;
+  }
+
+  .sws-grid-items {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .sws {
+    padding: 3rem 2rem;
+  }
+
+  .sws-wrapper img {
+    height: 100%;
+    width: 100%;
+  }
+
+  .sws h1 {
+    font-size: 28px;
+  }
+
+  ::ng-deep .p-card-content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  ::ng-deep .p-card-body {
+    text-align: center;
+  }
+}

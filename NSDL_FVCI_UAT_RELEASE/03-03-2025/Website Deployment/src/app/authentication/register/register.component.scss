@@ -1,0 +1,561 @@
+*:focus {
+  box-shadow: none !important;
+}
+
+.container {
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 4rem 0;
+}
+
+.p-float-label label {
+  font-size: 1rem;
+}
+
+.sign-up-header-icons {
+  background-color: #fef3f2;
+  border-radius: 100%;
+}
+
+#field-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+:host ::ng-deep .p-inputtext:enabled:focus,
+.p-button:enabled:focus {
+  box-shadow: none !important;
+}
+
+.register {
+  background-color: #f5f5fa;
+}
+
+::ng-deep .p-step:has(~ .p-step-active) .p-step-title,
+::ng-deep .p-step:has(~ .p-step-active) .p-step-number {
+  color: #10b981 !important;
+  font-weight: bold;
+}
+
+::ng-deep .p-step:has(~ .p-step-active) .p-stepper-separator {
+  background-color: #10b981 !important;
+}
+
+::ng-deep .p-step-active .p-step-number {
+  color: #10b981 !important;
+}
+
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+#organisation-name,
+#user-name,
+#organization-name,
+#number-identifier,
+#global-custodian-name,
+#global-custodian-registration-number,
+#global-custodian-name-of-user,
+#authority-issued-identifier,
+#date-of-birth,
+#authority-issued-identifier-other,
+#city,
+#state,
+#zip,
+#country,
+#residency-registration-number,
+#residency-registration-number-other,
+#mno,
+#area,
+#userid,
+#captcha {
+  width: 100%;
+}
+
+.validation-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.validation-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.validation-item i {
+  font-size: 0.75rem;
+}
+
+.container h1,
+p,
+span {
+  color: #2c3e5d;
+}
+
+.p-card h1 {
+  text-align: center;
+  color: #8f1709;
+}
+
+.p-card-content {
+  margin-bottom: 2rem;
+}
+
+.p-card-content span {
+  font-weight: 500;
+  font-size: 1.2rem;
+  margin-left: 0.5rem;
+}
+
+.user-wrapper {
+  /* display: flex; */
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2rem;
+}
+
+.user-wrapper h4 {
+  font-weight: 400;
+  font-size: large;
+}
+
+.user-sub-wrapper {
+  display: flex;
+  /* flex-wrap: wrap; */
+  align-items: center;
+  gap: 2rem;
+}
+
+.fpiType-sub-wrapper {
+  display: flex;
+  /* flex-wrap: wrap; */
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.address-wrapper,
+.credential-wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+::ng-deep .p-stepper .p-stepper-panels {
+  padding: 0;
+  border-radius: 30px;
+}
+
+::ng-deep .p-card {
+  border-radius: 20px !important;
+}
+
+::ng-deep .p-step-active .p-step-title {
+  font-weight: bold;
+}
+
+.radio {
+  display: flex;
+  align-items: center;
+}
+
+.radio-label {
+  margin-left: 0.5rem;
+  font-size: 1rem;
+  color: #2c3e50;
+  font-weight: 350;
+}
+
+#review-details span label {
+  color: #2c3e50;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+#review-details-p {
+  font-weight: 400;
+}
+
+::ng-deep .p-button.p-button-icon-only.p-button-rounded {
+  width: 40px;
+  height: 40px;
+}
+
+::ng-deep .p-button.p-button-outlined {
+  color: #8f1709;
+  background: transparent;
+  border-radius: 50%;
+  border: 1px solid #8f1709;
+}
+
+::ng-deep .p-card .p-card-body {
+  padding: 3rem 5rem;
+}
+
+.main-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.captcha-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 2rem;
+  width: 100%;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.captcha-wrapper img,
+.finish img {
+  width: auto;
+  height: auto;
+}
+
+.refresh {
+  background-color: #f7f8f9;
+  color: #2c3e5d;
+  border: none;
+  border-radius: 50%;
+}
+
+.reset {
+  background-color: rgba(143, 23, 9, 0.05); /* 5% opacity */
+  border-radius: 9px;
+  border: none;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #8f1709;
+  height: 40px;
+  width: 80px;
+  cursor: pointer;
+}
+
+.p-button:not(:disabled):active,
+::ng-deep .p-button:not(:disabled):hover {
+  background-color: transparent;
+  border: none;
+}
+
+::ng-deep .p-button {
+  border-radius: 8px;
+  background-color: #8f1709;
+  color: #fff;
+  border: none;
+}
+
+::ng-deep .p-stepper .p-stepper-nav {
+  margin: 2rem 0;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.custom-otp-input {
+  width: 45px;
+  font-size: 36px;
+  appearance: none;
+  text-align: center;
+  transition: all 0.2s;
+  background: transparent;
+  border-radius: 5px;
+  margin: 0 0.2rem;
+}
+
+.custom-otp-input:focus {
+  outline: 0 none;
+  box-shadow: none;
+  border-bottom-color: var(--primary-color);
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.finish > * {
+  text-align: center;
+  display: block;
+  margin: 1rem auto;
+}
+
+.login {
+  width: 15%;
+  border-radius: 38px;
+  background-color: #8f1709;
+  border: none;
+}
+
+::ng-deep .password-validation-popover.p-popover {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  max-width: none;
+}
+
+::ng-deep .password-validation-popover .p-popover-arrow {
+  border-bottom-color: white;
+}
+
+::ng-deep .password-validation-popover .validation-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+::ng-deep .password-validation-popover .validation-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+::ng-deep .password-validation-popover .validation-item i {
+  font-size: 0.875rem;
+}
+
+::ng-deep .p-step:has(~ .p-step-active) .p-step-title,
+::ng-deep .p-step:has(~ .p-step-active) .p-step-number {
+  color: #8f1709 !important;
+  font-weight: bold;
+}
+
+::ng-deep .p-step:has(~ .p-step-active) .p-stepper-separator {
+  background-color: #8f1709 !important;
+}
+
+::ng-deep .p-step-active .p-step-number {
+  color: #8f1709 !important;
+}
+
+::ng-deep .p-step-active .p-step-title {
+  color: #8f1709 !important;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 1200px) {
+  .container {
+    padding: 4rem 3rem;
+  }
+
+  ::ng-deep .p-card .p-card-body {
+    padding: 3rem 2rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .address-wrapper,
+  .credential-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .button-wrapper {
+    justify-content: center;
+  }
+
+  .login {
+    width: 40%;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .container {
+    padding: 4rem 1.5rem;
+  }
+}
+
+.refresh {
+  background-color: #f7f8f9;
+  color: #2c3e5d;
+  border: none;
+  border-radius: 100%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.refresh-icon {
+  font-size: 1rem;
+  transition: transform 0.35s ease-in-out; /* Smooth transition */
+}
+
+.next-button {
+  height: 40px;
+  width: 80px;
+  color: white;
+  font-weight: 600;
+  background-color: #8f1709;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.next-button:disabled,
+.disabled-button {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #ccc;
+  border-color: #ccc;
+}
+
+.next-button {
+  transition: opacity 0.3s ease, background-color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+::ng-deep .p-password {
+  width: 100% !important;
+  display: block !important;
+}
+
+::ng-deep .p-password-input {
+  width: 100% !important;
+}
+
+::ng-deep .p-datepicker {
+  width: 100% !important;
+}
+
+.pt-4 {
+  padding-top: 1rem; /* adjust as needed */
+}
+
+.column-gap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Icon & Header */
+.icon-padding {
+  padding: 0.75rem;
+}
+
+/* Mobile Number Input Group */
+.select-no-right-border {
+  flex: 0 0 auto;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: none;
+  margin-right: 0.5rem;
+}
+
+.flex-display {
+  display: flex;
+  align-items: center;
+}
+
+.input-no-left-border {
+  flex: 1;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left: none;
+  min-width: 66%;
+  max-width: 75%;
+}
+
+/* OTP Input Styles */
+.otp-gap {
+  gap: 10px;
+}
+
+.otp-input {
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  appearance: none;
+  text-align: center;
+  border-radius: 5px;
+  border: 2px solid lightgray;
+  background: transparent;
+  color: black;
+}
+
+.otp-separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  font-size: 24px;
+  color: black;
+}
+
+.otp-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Error Text */
+.error-text {
+  color: #dc3545;
+  font-size: 0.875rem;
+}
+
+/* Send/Resend OTP button styling */
+.resend-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 200px;
+  height: 40px;
+  color: white;
+  font-weight: 600;
+  background-color: #8f1709;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.resend-button:hover:not(:disabled) {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.resend-button:active:not(:disabled) {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.resend-button.disabled {
+  background-color: #8f1709;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.resend-button:disabled {
+  cursor: not-allowed;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+::ng-deep .password-tooltip {
+  background-color: #f0f8ff !important;
+}

@@ -1,0 +1,44 @@
+<app-navbar></app-navbar>
+<main class="flex">
+  <app-sidebar class="sidebar"></app-sidebar>
+  <div class="content-wrapper">
+    <app-menu
+      (stepChanged)="updateCurrentStep($event)"
+      (onButtonClick)="onButtonClick()"
+    ></app-menu>
+
+    <router-outlet></router-outlet>
+    <ng-container [ngSwitch]="currentStep">
+      <ng-container [ngSwitch]="currentStep">
+        <app-fvci-form
+          *ngSwitchCase="1"
+          [applicationId]="applicationId"
+        ></app-fvci-form>
+        <app-registration-form
+          *ngSwitchCase="2"
+          [applicationId]="applicationId"
+        ></app-registration-form>
+        <app-annexure-form
+          *ngSwitchCase="3"
+          [applicationId]="applicationId"
+        ></app-annexure-form>
+        <app-documents-upload
+          *ngSwitchCase="4"
+          [applicationId]="applicationId"
+        ></app-documents-upload>
+        <app-declaration-undertaking
+          *ngSwitchCase="5"
+          [applicationId]="applicationId"
+        ></app-declaration-undertaking>
+        <app-preview
+          *ngSwitchCase="6"
+          [applicationId]="applicationId"
+        ></app-preview>
+        <app-acknowledgement
+          *ngSwitchCase="7"
+          [applicationId]="applicationId"
+        ></app-acknowledgement>
+      </ng-container>
+    </ng-container>
+  </div>
+</main>

@@ -1,0 +1,95 @@
+*:focus {
+  box-shadow: none !important;
+}
+
+.nav {
+  width: 100%;
+  // background-color: #f2f0e6;
+  background-color: #fff;
+  padding: 1rem;
+}
+
+.nav-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4rem;
+  gap: 1rem;
+}
+
+img.logo {
+  height: 40px;
+  object-fit: contain;
+}
+
+::ng-deep .p-menubar {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+::ng-deep .p-menubar-submenu {
+  min-width: auto !important;
+}
+
+::ng-deep
+  .p-menubar
+  .p-menuitem
+  > .p-menuitem-content
+  .p-menuitem-link
+  .p-menuitem-text {
+  line-height: 1.5;
+}
+
+::ng-deep .p-menubar-item-label,
+::ng-deep .p-menubar-item-icon {
+  color: #8f1709 !important;
+}
+
+:host ::ng-deep .register-item {
+  background-color: #8f1709;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+
+:host ::ng-deep .register-item .p-menubar-item-label {
+  color: white !important;
+  font-size: 1rem;
+}
+
+::ng-deep .p-menubar-item:not(.p-disabled) > .p-menubar-item-content:hover,
+::ng-deep .p-menubar-item-active > .p-menubar-item-content {
+  background: transparent !important;
+}
+
+@media screen and (max-width: 1024px) {
+  .nav-wrapper {
+    padding: 0 1.5rem;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  ::ng-deep .p-menubar.p-menubar-mobile-active .p-menubar-root-list {
+    position: absolute;
+    top: 100%;
+    left: auto;
+    right: 0;
+    width: 300px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 1rem;
+    z-index: 1000;
+  }
+
+  .nav-wrapper {
+    justify-content: space-between;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  ::ng-deep .p-menubar.p-menubar-mobile-active .p-menubar-root-list {
+    width: 275px;
+  }
+}

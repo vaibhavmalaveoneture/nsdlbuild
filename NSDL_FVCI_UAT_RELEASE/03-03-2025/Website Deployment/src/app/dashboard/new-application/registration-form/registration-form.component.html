@@ -1,0 +1,833 @@
+<p-toast></p-toast>
+<div class="card-wrapper">
+  <p-card class="registration-card">
+    <div class="form-header">
+      <p id="form-title">
+        <span>FVCI Registration</span>
+        Application Form for Grant of Certificate of Registration as Foreign
+        Venture Capital Investor (FVCI)
+      </p>
+      <div class="wrapper">
+        <img [src]="download" alt="download button" />
+        <a href="">Download</a>
+      </div>
+    </div>
+    <p-scrollpanel [style]="{ width: '100%', height: '500px' }">
+      <form [formGroup]="formGroup">
+        <!-- Section 8: Investment Manager -->
+        <div class="input-group">
+          <div style="display: flex; gap: 0.5rem; align-items: center">
+            <label for="investmentManagerTable">
+              8) Information Pertaining to Investment Manager
+              <span>*</span>
+            </label>
+            <div
+              pTooltip="Provide details for each investment manager"
+              tooltipPosition="right"
+            >
+              <i
+                class="pi pi-info-circle"
+                style="font-size: 14px; color: #748297"
+              ></i>
+            </div>
+          </div>
+          <p-table
+            id="investmentManagerTable"
+            [value]="managers.controls"
+            showGridlines="true"
+          >
+            <ng-template pTemplate="header">
+              <tr>
+                <th scope="col" class="sub-labels">
+                  Information Pertaining to Investment Manager
+                </th>
+                <th scope="col" class="sub-labels">Actions</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-manager let-i="rowIndex">
+              <tr>
+                <td>
+                  <p-accordion [value]="'panel-' + i">
+                    <p-accordion-panel [value]="'panel-' + i">
+                      <p-accordion-header class="sub-labels">
+                        Senior Managing Official - {{ i + 1 }}
+                      </p-accordion-header>
+                      <p-accordion-content>
+                        <p-table showGridlines="true" [value]="managerFields">
+                          <ng-template pTemplate="header">
+                            <tr>
+                              <th scope="col"></th>
+                              <th scope="col" class="sub-labels">
+                                Particulars
+                              </th>
+                              <th scope="col" class="sub-labels">Details</th>
+                            </tr>
+                          </ng-template>
+                          <ng-template pTemplate="body" let-field>
+                            <tr [formGroup]="getManagerFormGroup(i)">
+                              <td>{{ field.id }}</td>
+                              <td>{{ field.name }}</td>
+                              <td>
+                                <ng-container
+                                  *ngIf="field.id === 'c)'; else defaultInput"
+                                >
+                                  <p-select
+                                    [formControlName]="field.id"
+                                    [options]="countries"
+                                    optionLabel="name"
+                                    optionValue="name"
+                                    placeholder="Select Country"
+                                    class="full-width"
+                                    [filter]="true"
+                                    [filterBy]="'name'"
+                                    [showClear]="true"
+                                    appendTo="body"
+                                    [style]="{ width: '100%' }"
+                                  ></p-select>
+                                </ng-container>
+                                <ng-template #defaultInput>
+                                  <input
+                                    type="text"
+                                    pInputText
+                                    [formControlName]="field.id"
+                                    placeholder="Enter Details"
+                                  />
+                                </ng-template>
+                              </td>
+                            </tr>
+                          </ng-template>
+                        </p-table>
+                      </p-accordion-content>
+                    </p-accordion-panel>
+                  </p-accordion>
+                </td>
+                <td>
+                  <div class="action-buttons">
+                    <button
+                      pButton
+                      icon="pi pi-plus"
+                      class="p-button-rounded p-button-text"
+                      (click)="addManager()"
+                    ></button>
+                    <button
+                      pButton
+                      icon="pi pi-trash"
+                      class="p-button-rounded p-button-text p-button-danger"
+                      (click)="removeManager(i)"
+                      [disabled]="managers.length === 1"
+                    ></button>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+
+        <!-- Section 9: Compliance Officer -->
+        <div class="input-group">
+          <div style="display: flex; gap: 0.5rem; align-items: center">
+            <label for="complianceOfficerSection">
+              9) Information Pertaining To The Compliance Officer
+              <span>*</span>
+            </label>
+            <div
+              pTooltip="Provide details for the compliance officer"
+              tooltipPosition="right"
+            >
+              <i
+                class="pi pi-info-circle"
+                style="font-size: 14px; color: #748297"
+              ></i>
+            </div>
+          </div>
+          <div
+            id="complianceOfficerSection"
+            class="input-grid"
+            formGroupName="complianceOfficerInfo"
+          >
+            <div class="input-item">
+              <label for="complianceOfficerInfoName" class="sub-labels"
+                >Name <span>*</span></label
+              >
+              <input
+                type="text"
+                id="complianceOfficerInfoName"
+                formControlName="complianceOfficerInfoName"
+                pInputText
+                placeholder="Enter Name"
+              />
+              <div
+                *ngIf="
+                  formGroup.get('complianceOfficerInfoName')?.invalid &&
+                  formGroup.get('complianceOfficerInfoName')?.touched
+                "
+                class="error"
+              >
+                This field is required.
+              </div>
+            </div>
+            <div class="input-item">
+              <label for="complianceOfficerInfoJob" class="sub-labels"
+                >Job Title <span>*</span></label
+              >
+              <input
+                type="text"
+                id="complianceOfficerInfoJob"
+                formControlName="complianceOfficerInfoJob"
+                pInputText
+                placeholder="Enter Job Title"
+              />
+              <div
+                *ngIf="
+                  formGroup.get('complianceOfficerInfoJob')?.invalid &&
+                  formGroup.get('complianceOfficerInfoJob')?.touched
+                "
+                class="error"
+              >
+                This field is required.
+              </div>
+            </div>
+          </div>
+
+          <div formGroupName="complianceOfficerInfo">
+            <div class="input-grid">
+              <div class="input-item">
+                <label for="complianceOfficerInfoMobile" class="sub-labels">
+                  Telephone Number <span>*</span>
+                </label>
+                <input
+                  type="text"
+                  id="complianceOfficerInfoMobile"
+                  pInputText
+                  placeholder="Enter Telephone Number"
+                  formControlName="complianceOfficerInfoMobile"
+                />
+                <div
+                  *ngIf="
+                    formGroup.get('complianceOfficerInfoMobile')?.invalid &&
+                    formGroup.get('complianceOfficerInfoMobile')?.touched
+                  "
+                  class="error"
+                >
+                  This field is required.
+                </div>
+              </div>
+              <div class="input-item">
+                <label for="complianceOfficerInfoFax" class="sub-labels"
+                  >Fax Number <span>*</span></label
+                >
+                <input
+                  type="text"
+                  id="complianceOfficerInfoFax"
+                  formControlName="complianceOfficerInfoFax"
+                  pInputText
+                  placeholder="Enter Fax Number"
+                />
+                <div
+                  *ngIf="
+                    formGroup.get('complianceOfficerInfoFax')?.invalid &&
+                    formGroup.get('complianceOfficerInfoFax')?.touched
+                  "
+                  class="error"
+                >
+                  This field is required.
+                </div>
+              </div>
+            </div>
+            <div class="input-grid">
+              <div class="input-item">
+                <label for="complianceOfficerInfoEmail" class="sub-labels"
+                  >Email Id <span>*</span></label
+                >
+                <input
+                  type="email"
+                  id="complianceOfficerInfoEmail"
+                  formControlName="complianceOfficerInfoEmail"
+                  pInputText
+                  placeholder="Enter Email"
+                />
+                <div
+                  *ngIf="
+                    formGroup.get('complianceOfficerInfoEmail')?.invalid &&
+                    formGroup.get('complianceOfficerInfoEmail')?.touched
+                  "
+                  class="error"
+                >
+                  This field is required.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 12: Applicant Type -->
+        <div
+          class="input-group"
+          formGroupName="applicantType"
+          style="display: flex; flex-direction: column; gap: 2rem"
+        >
+          <div style="display: flex; flex-direction: column; gap: 1rem">
+            <div style="display: flex; gap: 0.5rem; align-items: center">
+              <label for="applicantTypeName"
+                >12) Type of the Applicant <span>*</span></label
+              >
+              <div
+                pTooltip="Specify the applicant type"
+                tooltipPosition="right"
+              >
+                <i
+                  class="pi pi-info-circle"
+                  style="font-size: 14px; color: #748297"
+                ></i>
+              </div>
+            </div>
+            <input
+              type="text"
+              id="applicantTypeName"
+              pInputText
+              formControlName="applicantTypeName"
+              placeholder="Enter Your Name"
+            />
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 1rem">
+            <div style="display: flex; gap: 3rem; align-items: center">
+              <div style="display: flex; gap: 0.5rem; align-items: center">
+                <label for="applicantTypeOtherEntity">
+                  If any other entity or investment vehicle, please give details
+                </label>
+                <div
+                  pTooltip="Select 'Yes' if there is another entity, otherwise 'No'"
+                  tooltipPosition="right"
+                >
+                  <i
+                    class="pi pi-info-circle"
+                    style="font-size: 14px; color: #748297"
+                  ></i>
+                </div>
+              </div>
+              <div class="radio">
+                <p-radioButton
+                  [formControlName]="'applicantTypeRadio'"
+                  value="applicantTypeRadioYes"
+                  inputId="applicantTypeRadioYes"
+                >
+                </p-radioButton>
+                <label for="applicantTypeRadioYes" class="sub-labels"
+                  >Yes</label
+                >
+                <p-radioButton
+                  [formControlName]="'applicantTypeRadio'"
+                  value="applicantTypeRadioNo"
+                  inputId="applicantTypeRadioNo"
+                >
+                </p-radioButton>
+                <label for="applicantTypeRadioNo" class="sub-labels">No</label>
+              </div>
+            </div>
+            <input
+              type="text"
+              pInputText
+              placeholder="Enter Details"
+              *ngIf="
+                formGroup.get('applicantType.applicantTypeRadio')?.value ===
+                'applicantTypeRadioYes'
+              "
+              formControlName="applicantTypeOtherEntity"
+              id="applicantTypeOtherEntity"
+            />
+          </div>
+        </div>
+
+        <!-- Section 16: Self-Certification / FATCA / CRS Declaration -->
+        <div class="input-group">
+          <div style="display: flex; flex-direction: column; gap: 1.5rem">
+            <div>
+              <label for="providedValidFormGroup">
+                16) Whether the applicant has provided with valid
+                self-certification/ Foreign Account Tax Compliance Act (FATCA) /
+                Common Reporting Standard (CRS) declaration form?
+                <span>*</span>
+                <i
+                  class="pi pi-info-circle"
+                  style="font-size: 14px; color: #748297; margin-left: 1rem"
+                  pTooltip="Confirm if valid certification form is provided"
+                  tooltipPosition="right"
+                ></i>
+              </label>
+            </div>
+            <div class="radio">
+              <p-radioButton
+                [formControlName]="'providedValidForm'"
+                [value]="true"
+                inputId="providedValidFormYes"
+              >
+              </p-radioButton>
+              <label for="providedValidFormYes" class="sub-labels">Yes</label>
+              <p-radioButton
+                [formControlName]="'providedValidForm'"
+                [value]="false"
+                inputId="providedValidFormNo"
+              >
+              </p-radioButton>
+              <label for="providedValidFormNo" class="sub-labels">No</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 17: Regulatory Authority -->
+        <div class="input-group">
+          <label for="regulation">
+            17) Details of Regulatory authority by which the applicant is
+            regulated (If applicable)
+            <i
+              class="pi pi-info-circle"
+              style="font-size: 14px; color: #748297; margin-left: 1rem"
+              pTooltip="Review regulatory authority details"
+              tooltipPosition="right"
+            ></i>
+          </label>
+          <p-table
+            id="regulationTable"
+            [value]="regulationData"
+            showGridlines
+            [responsiveLayout]="'scroll'"
+            class="p-datatable-striped"
+          >
+            <ng-template pTemplate="header">
+              <tr>
+                <th scope="col"></th>
+                <th scope="col" class="sub-labels">Particulars</th>
+                <th scope="col" class="sub-labels">Details</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item let-i="rowIndex">
+              <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.name }}</td>
+                <td>
+                  <!-- Text Input -->
+                  <input
+                    *ngIf="item.type === 'text'"
+                    type="text"
+                    pInputText
+                    [formControl]="$any(regulatoryAuthorityDetails.controls[i])"
+                    placeholder="{{ item.placeholder }}"
+                  />
+                  <!-- Dropdown -->
+                  <p-select
+                    *ngIf="item.type === 'dropdown'"
+                    [formControl]="$any(regulatoryAuthorityDetails.controls[i])"
+                    placeholder="{{ item.placeholder }}"
+                    [options]="countries"
+                    optionLabel="name"
+                    optionValue="name"
+                    class="full-width"
+                    [filter]="true"
+                    [filterBy]="'name'"
+                    [showClear]="true"
+                    appendTo="body"
+                    [style]="{ width: '100%' }"
+                  ></p-select>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+
+        <!-- Section 18: Global Custodian -->
+        <div class="input-group">
+          <div
+            formGroupName="throughGlobalCustodian"
+            style="display: flex; gap: 3rem; align-items: center"
+          >
+            <div style="display: flex; gap: 0.5rem; align-items: center">
+              <label for="throughGlobalCustodianGroup">
+                18) Whether the applicant is coming through Global Custodian?
+              </label>
+              <div
+                pTooltip="Indicate if global custodian is involved"
+                tooltipPosition="right"
+              >
+                <i
+                  class="pi pi-info-circle"
+                  style="font-size: 14px; color: #748297"
+                ></i>
+              </div>
+            </div>
+            <div class="radio">
+              <p-radioButton
+                [formControlName]="'throughGlobalCustodianRadio'"
+                value="throughGlobalCustodianRadioYes"
+                inputId="throughGlobalCustodianRadioYes"
+              >
+              </p-radioButton>
+              <label for="throughGlobalCustodianRadioYes" class="sub-labels"
+                >Yes</label
+              >
+              <p-radioButton
+                [formControlName]="'throughGlobalCustodianRadio'"
+                value="throughGlobalCustodianRadioNo"
+                inputId="throughGlobalCustodianRadioNo"
+              >
+              </p-radioButton>
+              <label for="throughGlobalCustodianRadioNo" class="sub-labels"
+                >No</label
+              >
+            </div>
+          </div>
+
+          <div
+            formGroupName="throughGlobalCustodian"
+            *ngIf="
+              formGroup.get(
+                'throughGlobalCustodian.throughGlobalCustodianRadio'
+              )?.value === 'throughGlobalCustodianRadioYes'
+            "
+          >
+            <div class="input-grid">
+              <div class="input-item">
+                <label for="throughGlobalCustodianName" class="sub-labels">
+                  Name of Global Custodian <span>*</span>
+                </label>
+                <input
+                  type="text"
+                  id="throughGlobalCustodianName"
+                  pInputText
+                  placeholder="Enter Global Custodian Name"
+                  formControlName="throughGlobalCustodianName"
+                />
+                <div
+                  *ngIf="
+                    formGroup.get('throughGlobalCustodianName')?.invalid &&
+                    formGroup.get('throughGlobalCustodianName')?.touched
+                  "
+                  class="error"
+                >
+                  This field is required.
+                </div>
+              </div>
+              <div class="input-item">
+                <label for="throughGlobalCustodianAddress" class="sub-labels">
+                  Address <span>*</span>
+                </label>
+                <input
+                  type="text"
+                  id="throughGlobalCustodianAddress"
+                  formControlName="throughGlobalCustodianAddress"
+                  pInputText
+                  placeholder="Enter Address"
+                />
+                <div
+                  *ngIf="
+                    formGroup.get('throughGlobalCustodianAddress')?.invalid &&
+                    formGroup.get('throughGlobalCustodianAddress')?.touched
+                  "
+                  class="error"
+                >
+                  This field is required.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 19: Designated Depository Participant -->
+        <div class="input-group">
+          <label for="designationTable">
+            19) Details of the designated depository participant, custodian and
+            Depository Participant
+            <i
+              class="pi pi-info-circle"
+              style="font-size: 14px; color: #748297; margin-left: 1rem"
+              pTooltip="Review depository participant details"
+              tooltipPosition="right"
+            ></i>
+          </label>
+          <p-table
+            id="designationTable"
+            [value]="designationData"
+            showGridlines
+            [responsiveLayout]="'scroll'"
+            class="p-datatable-striped"
+          >
+            <ng-template pTemplate="header">
+              <tr>
+                <th scope="col"></th>
+                <th scope="col" class="sub-labels">Particulars</th>
+                <th scope="col" class="sub-labels">
+                  Name of the Designated Depository Participant
+                </th>
+                <th scope="col" class="sub-labels">
+                  SEBI Registration number for DDP/Custodian
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item let-i="rowIndex">
+              <tr [formGroup]="$any(designatorDetails.controls[i])">
+                <td>{{ item.id }}</td>
+                <td>{{ item.name }}</td>
+                <td>
+                  <input
+                    type="text"
+                    formControlName="name"
+                    pInputText
+                    placeholder="Enter Details"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    formControlName="number"
+                    pInputText
+                    placeholder="Enter Details"
+                  />
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+
+        <!-- Section 20: Designated Bank -->
+        <div class="input-group">
+          <label for="designatedBankGroup">
+            20) Details of the designated bank
+            <i
+              class="pi pi-info-circle"
+              style="font-size: 14px; color: #748297; margin-left: 1rem"
+              pTooltip="Enter bank details"
+              tooltipPosition="right"
+            ></i>
+          </label>
+          <div class="input-grid" formGroupName="designatedBank">
+            <div class="input-item">
+              <label for="designatedBankName" class="sub-labels"
+                >Name of the Bank and Branch
+              </label>
+              <input
+                type="text"
+                id="designatedBankName"
+                pInputText
+                placeholder="Enter Bank and Branch Name"
+                formControlName="designatedBankName"
+              />
+              <div
+                *ngIf="
+                  formGroup.get('designatedBank.designatedBankName')?.invalid &&
+                  formGroup.get('designatedBank.designatedBankName')?.touched
+                "
+                class="error"
+              >
+                This field is required.
+              </div>
+            </div>
+            <div class="input-item">
+              <label for="designatedBankAddress" class="sub-labels"
+                >Address</label
+              >
+              <input
+                type="text"
+                id="designatedBankAddress"
+                formControlName="designatedBankAddress"
+                pInputText
+                placeholder="Enter Address"
+              />
+              <div
+                *ngIf="
+                  formGroup.get('designatedBank.designatedBankName')?.invalid &&
+                  formGroup.get('designatedBank.designatedBankName')?.touched
+                "
+                class="error"
+              >
+                This field is required.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 21: Prior Association with Indian Securities Market -->
+        <div class="input-group">
+          <label for="priorAssociationGroup">
+            21) Details of Prior association with Indian securities market
+            <i
+              class="pi pi-info-circle"
+              style="font-size: 14px; color: #748297; margin-left: 1rem"
+              pTooltip="Provide details of any prior association"
+              tooltipPosition="right"
+            ></i>
+          </label>
+          <div
+            formGroupName="priorAssociation"
+            style="display: flex; flex-direction: column; gap: 1rem"
+          >
+            <div style="display: flex; gap: 3rem; align-items: center">
+              <div style="display: flex; gap: 0.5rem; align-items: center">
+                <label for="priorAssociationRadioYes" class="sub-labels">
+                  Whether the applicant is/was anytime associated with Indian
+                  securities market in any capacity?
+                </label>
+                <div
+                  pTooltip="Provide details of any prior association"
+                  tooltipPosition="right"
+                >
+                  <i
+                    class="pi pi-info-circle"
+                    style="font-size: 14px; color: #748297"
+                  ></i>
+                </div>
+              </div>
+              <div class="radio">
+                <p-radioButton
+                  [formControlName]="'priorAssociationRadio'"
+                  [value]="true"
+                  inputId="priorAssociationRadioYes"
+                >
+                </p-radioButton>
+                <label for="priorAssociationRadioYes" class="sub-labels"
+                  >Yes</label
+                >
+                <p-radioButton
+                  [formControlName]="'priorAssociationRadio'"
+                  [value]="false"
+                  inputId="priorAssociationRadioNo"
+                >
+                </p-radioButton>
+                <label for="priorAssociationRadioNo" class="sub-labels"
+                  >No</label
+                >
+              </div>
+            </div>
+            <input
+              type="text"
+              pInputText
+              placeholder="Enter Details"
+              *ngIf="
+                formGroup.get('priorAssociation.priorAssociationRadio')?.value
+              "
+              id="priorAssociationDetails"
+            />
+          </div>
+        </div>
+
+        <!-- Section 22: PAN Details -->
+        <div formGroupName="hasPan" class="input-group">
+          <div style="display: flex; gap: 3rem; align-items: center">
+            <label for="hasPanGroup">
+              22. Whether the applicant already holds Permanent Account Number
+              (PAN)?
+              <i
+                class="pi pi-info-circle"
+                style="font-size: 14px; color: #748297; margin-left: 1rem"
+                pTooltip="Indicate if PAN is held"
+                tooltipPosition="right"
+              ></i>
+            </label>
+            <div class="radio">
+              <p-radioButton
+                [formControlName]="'hasPanRadio'"
+                [value]="true"
+                inputId="hasPanRadioYes"
+              >
+              </p-radioButton>
+              <label for="hasPanRadioYes" class="sub-labels">Yes</label>
+              <p-radioButton
+                [formControlName]="'hasPanRadio'"
+                [value]="false"
+                inputId="hasPanRadioNo"
+              >
+              </p-radioButton>
+              <label for="hasPanRadioNo" class="sub-labels">No</label>
+            </div>
+          </div>
+          <div
+            class="existing-pan"
+            *ngIf="formGroup.get('hasPan.hasPanRadio')?.value"
+            style="display: flex; flex-direction: column; gap: 0.5rem"
+          >
+            <label for="hasPanNumber" class="sub-labels"
+              >Please mention PAN</label
+            >
+            <input
+              type="text"
+              id="hasPanNumber"
+              pInputText
+              formControlName="hasPanNumber"
+              placeholder="Enter PAN Details"
+            />
+          </div>
+        </div>
+
+        <!-- Section 22 (Disciplinary History) -->
+        <div
+          class="input-group"
+          formGroupName="disciplinaryHistory"
+          style="display: flex; flex-direction: column; gap: 2rem"
+        >
+          <div style="display: flex; flex-direction: column; gap: 1.5rem">
+            <label for="disciplinaryHistoryGroup">
+              22) Disciplinary History
+              <i
+                class="pi pi-info-circle"
+                style="font-size: 14px; color: #748297; margin-left: 1rem"
+                pTooltip="Provide details on any disciplinary history"
+                tooltipPosition="right"
+              ></i>
+            </label>
+            <label
+              for="disciplinaryHistoryRadio"
+              style="color: #131820; font-weight: 400"
+            >
+              Whether there has been any instance of violation or non-adherence
+              to the securities laws, code of ethics/conduct, code of business
+              rules, for which the applicant or its parent/holding company or
+              associate/or promoter/investment manager may have been subjected
+              to criminal liability or suspended from carrying out its
+              operations or the registration, has been revoked, temporarily or
+              permanently or any \ regulatory actions that have resulted in
+              temporary or permanent suspension of investment related operations
+              in jurisdiction where the applicant is operating and has a bearing
+              on obtaining FVCI registration for investing in India?
+            </label>
+          </div>
+          <div class="radio">
+            <p-radioButton
+              [formControlName]="'disciplinaryHistoryRadio'"
+              [value]="true"
+              inputId="disciplinaryHistoryRadioYes"
+            >
+            </p-radioButton>
+            <label for="disciplinaryHistoryRadioYes" class="sub-labels"
+              >Yes</label
+            >
+            <p-radioButton
+              [formControlName]="'disciplinaryHistoryRadio'"
+              [value]="false"
+              inputId="disciplinaryHistoryRadioNo"
+            >
+            </p-radioButton>
+            <label for="disciplinaryHistoryRadioNo" class="sub-labels"
+              >No</label
+            >
+          </div>
+          <div
+            *ngIf="
+              formGroup.get('disciplinaryHistory.disciplinaryHistoryRadio')
+                ?.value
+            "
+          >
+            <p class="sub-labels">
+              Please mention details briefly in the field below.
+            </p>
+            <textarea
+              rows="10"
+              pTextarea
+              formControlName="disciplinaryHistoryText"
+              placeholder="Mention your details"
+              style="resize: vertical; width: 100%"
+            ></textarea>
+          </div>
+        </div>
+      </form>
+    </p-scrollpanel>
+  </p-card>
+</div>
+<app-loader *ngIf="showLoader"></app-loader>

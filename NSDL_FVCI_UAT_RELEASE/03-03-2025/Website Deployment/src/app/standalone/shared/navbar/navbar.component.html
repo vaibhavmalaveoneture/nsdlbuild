@@ -1,0 +1,22 @@
+<div class="nav">
+  <div class="nav-wrapper">
+    <div class="nav-menu">
+      <a routerLink="/">
+        <img [src]="nsdl" alt="nsdl-logo" class="logo" />
+      </a>
+      <p-menubar [model]="items">
+        <ng-template pTemplate="item" let-item>
+          <div *ngIf="item.label === userName">
+            <p-avatar [label]="userName[0]"> </p-avatar>
+            <span>{{ item.label }}</span>
+          </div>
+          <div *ngIf="item.label !== userName">
+            <i *ngIf="item.icon" [class]="item.icon"></i>
+            <span>{{ item.label }}</span>
+          </div>
+        </ng-template>
+      </p-menubar>
+    </div>
+  </div>
+</div>
+<app-loader *ngIf="showLoader"></app-loader>

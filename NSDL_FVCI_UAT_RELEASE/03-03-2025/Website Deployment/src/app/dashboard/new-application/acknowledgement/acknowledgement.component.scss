@@ -1,0 +1,100 @@
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.form-header span {
+  color: #000;
+  font-weight: 500;
+  color: #344054;
+  font-size: 18px;
+}
+
+.form-header p {
+  margin-top: 0;
+  color: #6b778c;
+  font-size: 12px;
+}
+
+.card-wrapper {
+  margin-left: 1rem;
+}
+
+::ng-deep .annexure-card > .p-card {
+  background-color: #f4f5f7;
+  margin-top: 7rem;
+  position: fixed;
+  margin-right: 2rem;
+  width: -webkit-fill-available;
+}
+
+.annexure-card form {
+  background-color: #fff;
+  padding: 1.5rem 3rem;
+  border: 1px solid #cfd3d4;
+  border-radius: 8px;
+}
+
+#form-title {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.wrapper img {
+  height: 24px;
+  width: 24px;
+}
+
+.wrapper a {
+  color: #2c3e5d;
+  font-size: 12px;
+}
+
+input {
+  width: 100%;
+}
+
+::ng-deep .p-scrollpanel-bar {
+  background: grey !important;
+}
+
+::ng-deep .annexure-card > .p-card {
+  background-color: #f4f5f7;
+  margin-top: 7rem;
+  position: fixed;
+  margin-right: 2rem;
+  width: -webkit-fill-available;
+}
+
+.annexure-card form {
+  background-color: #fff;
+  padding: 1.5rem 3rem;
+  border: 1px solid #cfd3d4;
+  border-radius: 8px;
+}
+
+::ng-deep .p-card-title {
+  font-size: 18px;
+}
+
+.ack-wrapper {
+  line-height: 1.5;
+}
+
+.ack-wrapper span {
+  color: #8f1709;
+}
+
+.ack-wrapper a {
+  color: #8f1709;
+  text-decoration: underline;
+  padding: 1rem;
+}

@@ -1,0 +1,19 @@
+<p-accordion [value]="tabs[0].value">
+  @for (tab of tabs; track tab.title) {
+  <p-accordion-panel [value]="tab.value">
+    <p-accordion-header
+      >{{ tab.title }}
+      <ng-template #toggleicon let-active="active">
+        @if (active) {
+        <i class="pi pi-minus"></i>
+        } @else {
+        <i class="pi pi-plus"></i>
+        }
+      </ng-template>
+    </p-accordion-header>
+    <p-accordion-content>
+      <p class="m-0">{{ tab.content }}</p>
+    </p-accordion-content>
+  </p-accordion-panel>
+  }
+</p-accordion>
