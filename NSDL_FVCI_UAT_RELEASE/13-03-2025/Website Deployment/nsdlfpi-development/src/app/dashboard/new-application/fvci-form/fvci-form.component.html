@@ -1,0 +1,1744 @@
+<div [appPreviewMode]="previewMode" [ngClass]="{ 'preview-mode': previewMode }">
+  <p-toast></p-toast>
+  <form [formGroup]="formGroup">
+    <div class="input-group">
+      <div style="display: flex; gap: 0.5rem; align-items: center">
+        <label for="name">1) Name of the Applicant <span>*</span></label>
+        <div
+          pTooltip="Full expanded name to be mentioned as appearing in proof of identity/address documents; the name should be provided without any abbreviations."
+          tooltipPosition="right"
+        >
+          <i
+            class="pi pi-info-circle"
+            style="font-size: 14px; color: #748297"
+          ></i>
+        </div>
+      </div>
+      <input
+        id="name"
+        type="text"
+        pInputText
+        formControlName="name"
+        placeholder="Enter Your Name"
+      />
+      <div
+        *ngIf="formGroup.get('name')?.invalid && formGroup.get('name')?.touched"
+        class="error"
+      >
+        Name is required.
+      </div>
+    </div>
+
+    <div class="input-group">
+      <div style="display: flex; gap: 3rem">
+        <div style="display: flex; gap: 0.5rem; align-items: center">
+          <label for="applicantOtherName"
+            >2) Have you ever been known by any other name?
+            <span>*</span></label
+          >
+          <div
+            pTooltip="If yes, please give the other name"
+            tooltipPosition="right"
+          >
+            <i
+              class="pi pi-info-circle"
+              style="font-size: 14px; color: #748297"
+            ></i>
+          </div>
+        </div>
+        <div
+          formGroupName="applicantOtherName"
+          style="display: flex; gap: 3rem"
+        >
+          <div class="radio">
+            <p-radiobutton
+              [value]="true"
+              inputId="otherNameYes"
+              formControlName="otherNameRadio"
+            ></p-radiobutton>
+            <label for="otherNameYes" class="radio-label">Yes</label>
+          </div>
+          <div class="radio">
+            <p-radiobutton
+              [value]="false"
+              inputId="otherNameNo"
+              formControlName="otherNameRadio"
+            ></p-radiobutton>
+            <label for="otherNameNo" class="radio-label">No</label>
+          </div>
+        </div>
+      </div>
+      <div formGroupName="applicantOtherName">
+        <input
+          *ngIf="
+            formGroup.get('applicantOtherName.otherNameRadio')?.value === true
+          "
+          id="otherNameField"
+          type="text"
+          pInputText
+          formControlName="otherNameField"
+          placeholder="Enter Other Name"
+        />
+        <div
+          *ngIf="
+            formGroup.get('applicantOtherName.otherNameField')?.invalid &&
+            formGroup.get('applicantOtherName.otherNameField')?.touched &&
+            formGroup.get('applicantOtherName.otherNameRadio')?.value === true
+          "
+          class="error"
+        >
+          This field is required.
+        </div>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <div style="display: flex; gap: 0.5rem; align-items: center">
+        <label for="data" scope="col"
+          >3) Date of Incorporation/ Establishment/ Formation
+          <span>*</span></label
+        >
+        <div pTooltip="Select date" tooltipPosition="right">
+          <i
+            class="pi pi-info-circle"
+            style="font-size: 14px; color: #748297"
+          ></i>
+        </div>
+      </div>
+      <p-table
+        showGridlines
+        [value]="data"
+        [responsiveLayout]="'scroll'"
+        class="p-datatable-striped"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col" class="sub-labels">Particulars</th>
+            <th scope="col" class="sub-labels">Date</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-i="rowIndex">
+          <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.name }}</td>
+            <td>
+              <p-datepicker
+                id="incDate{{ i }}"
+                [formControl]="$any(incorporationDates.controls[i])"
+                [showIcon]="true"
+                dateFormat="dd/mm/yy"
+                appendTo="body"
+              ></p-datepicker>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <div class="input-group">
+      <div style="display: flex; gap: 0.5rem; align-items: center">
+        <label for="tableData" scope="col"
+          >4) Place and Country of Incorporation/ Establishment/ Formation
+          <span>*</span></label
+        >
+        <div pTooltip="Select details" tooltipPosition="right">
+          <i
+            class="pi pi-info-circle"
+            style="font-size: 14px; color: #748297"
+          ></i>
+        </div>
+      </div>
+      <p-table
+        [value]="tableData"
+        showGridlines
+        [responsiveLayout]="'scroll'"
+        class="p-datatable-striped"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col" class="sub-labels">Particulars</th>
+            <th scope="col" class="sub-labels">Details</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-i="rowIndex">
+          <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.name }}</td>
+            <td>
+              <input
+                *ngIf="item.type === 'text'"
+                id="incPlace{{ i }}"
+                type="text"
+                pInputText
+                [formControl]="$any(incorporationPlace.controls[i])"
+                placeholder="{{ item.placeHolder }}"
+              />
+              <p-select
+                *ngIf="item.type === 'dropdown'"
+                id="incPlaceSelect{{ i }}"
+                [formControl]="$any(incorporationPlace.controls[i])"
+                placeholder="{{ item.placeHolder }}"
+                [options]="
+                  item.dropdownType === 'country'
+                    ? countries
+                    : item.dropdownType === 'countryCode'
+                    ? countryCodes
+                    : []
+                "
+                [optionLabel]="
+                  item.dropdownType === 'country' ? 'name' : 'code'
+                "
+                [filter]="true"
+                [filterBy]="item.dropdownType === 'country' ? 'name' : 'code'"
+                class="full-width"
+                [showClear]="true"
+                appendTo="body"
+              ></p-select>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <div class="input-group">
+      <div style="display: flex; gap: 0.5rem; align-items: center">
+        <label for="legalForm" scope="col"
+          >5) Legal form of the applicant and the law under which it is
+          incorporated, established or registered <span>*</span></label
+        >
+        <div pTooltip="Enter legal form" tooltipPosition="right">
+          <i
+            class="pi pi-info-circle"
+            style="font-size: 14px; color: #748297"
+          ></i>
+        </div>
+      </div>
+      <input
+        id="legalForm"
+        type="text"
+        formControlName="legalForm"
+        pInputText
+        placeholder="Enter Legal Form"
+      />
+      <div
+        *ngIf="
+          formGroup.get('legalForm')?.invalid &&
+          formGroup.get('legalForm')?.touched
+        "
+        class="error"
+      >
+        This field is required.
+      </div>
+    </div>
+
+    <div class="input-group">
+      <div style="display: flex; gap: 0.5rem; align-items: center">
+        <label for="lei" scope="col"
+          >6) Legal Entity Identifier (LEI), if applicable</label
+        >
+        <div pTooltip="Enter LEI" tooltipPosition="right">
+          <i
+            class="pi pi-info-circle"
+            style="font-size: 14px; color: #748297"
+          ></i>
+        </div>
+      </div>
+      <input
+        id="lei"
+        type="text"
+        pInputText
+        formControlName="lei"
+        placeholder="Enter Details"
+      />
+    </div>
+
+    <p-table
+      [value]="taxResidencyRows.controls"
+      showGridlines
+      [responsiveLayout]="'scroll'"
+      class="p-datatable-striped"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col" class="sub-labels">
+            Tax Residency Certificate (TRC) No.
+          </th>
+          <th scope="col" class="sub-labels">Country of Tax Residency</th>
+          <th scope="col" class="sub-labels">Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowForm let-index="rowIndex">
+        <tr [formGroup]="rowForm" class="table-header">
+          <td>{{ rowForm.get("id").value }}</td>
+          <td>
+            <input
+              id="trcNo{{ index }}"
+              type="text"
+              pInputText
+              formControlName="trcNo"
+              placeholder="Enter Details"
+            />
+          </td>
+          <td>
+            <p-select
+              id="taxCountry{{ index }}"
+              formControlName="country"
+              placeholder="Select Country Name"
+              [options]="countries"
+              optionLabel="name"
+              optionValue="name"
+              [filterBy]="'name'"
+              class="full-width"
+              [filter]="true"
+              [showClear]="true"
+              appendTo="body"
+            ></p-select>
+          </td>
+          <td>
+            <p-button
+              *ngIf="index === taxResidencyRows.length - 1"
+              icon="pi pi-plus"
+              [rounded]="true"
+              (onClick)="addTaxResidencyRow()"
+            ></p-button>
+            <p-button
+              *ngIf="taxResidencyRows.length > 1"
+              icon="pi pi-trash"
+              [rounded]="true"
+              severity="danger"
+              (onClick)="removeTaxResidencyRow(index)"
+            ></p-button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <div class="input-group">
+      <div
+        style="
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          margin-top: 1rem;
+          margin-bottom: 1rem;
+        "
+      >
+        <div style="display: flex; gap: 0.5rem; align-items: center">
+          <label for="registeredOffice" scope="col"
+            >7) Address & Communication Details <span>*</span></label
+          >
+          <div pTooltip="Enter details" tooltipPosition="right">
+            <i
+              class="pi pi-info-circle"
+              style="font-size: 14px; color: #748297"
+            ></i>
+          </div>
+        </div>
+        <div style="display: flex; gap: 0.5rem; align-items: center">
+          <label for="registeredOffice" scope="col" class="sub-labels"
+            >7.1) Registered/ Residence Address of the Applicant
+            <span>*</span></label
+          >
+          <div pTooltip="Enter address" tooltipPosition="right">
+            <i
+              class="pi pi-info-circle"
+              style="font-size: 14px; color: #748297"
+            ></i>
+          </div>
+        </div>
+      </div>
+      <div formGroupName="registeredOffice" class="input-grid">
+        <div class="input-item">
+          <label for="registeredFlatNum"
+            >Flat / Room / Door / Block No / Apartment</label
+          >
+          <input
+            id="registeredFlatNum"
+            type="text"
+            pInputText
+            formControlName="registeredFlatNum"
+            placeholder="Enter Details"
+          />
+        </div>
+        <div class="input-item">
+          <label for="registeredBuildingName">Name of Premises/Building</label>
+          <input
+            id="registeredBuildingName"
+            type="text"
+            pInputText
+            formControlName="registeredBuildingName"
+            placeholder="Enter Name of Premises/Building"
+          />
+        </div>
+        <div class="input-item">
+          <label for="registeredRoadName"
+            >Road / Street / Lane / Post Office</label
+          >
+          <input
+            id="registeredRoadName"
+            type="text"
+            pInputText
+            formControlName="registeredRoadName"
+            placeholder="Enter Details"
+          />
+        </div>
+      </div>
+
+      <div formGroupName="registeredOffice" class="input-grid">
+        <div class="input-item">
+          <label for="registeredAreaName">Area / Locality / Sub-Division</label>
+          <input
+            id="registeredAreaName"
+            type="text"
+            pInputText
+            formControlName="registeredAreaName"
+            placeholder="Enter Details"
+          />
+        </div>
+        <div class="input-item">
+          <label for="registeredTownName"
+            >Town / City / District <span>*</span></label
+          >
+          <input
+            id="registeredTownName"
+            type="text"
+            pInputText
+            formControlName="registeredTownName"
+            placeholder="Enter Town/City/District"
+          />
+        </div>
+        <div class="input-item">
+          <label for="registeredStateName">State <span>*</span></label>
+          <input
+            id="registeredStateName"
+            type="text"
+            pInputText
+            formControlName="registeredStateName"
+            placeholder="Enter State"
+          />
+        </div>
+      </div>
+
+      <div formGroupName="registeredOffice" class="input-grid">
+        <div class="input-item">
+          <label for="registeredCountryName">Country Name <span>*</span></label>
+          <p-select
+            id="registeredCountryName"
+            formControlName="registeredCountryName"
+            placeholder="Select Country Name"
+            [options]="countries"
+            optionLabel="name"
+            [filterBy]="'name'"
+            class="full-width"
+            [filter]="true"
+            [showClear]="true"
+            appendTo="body"
+          ></p-select>
+        </div>
+        <div class="input-item">
+          <label for="registeredZipName">Zip Code <span>*</span></label>
+          <input
+            id="registeredZipName"
+            type="text"
+            pInputText
+            formControlName="registeredZipName"
+            placeholder="Enter Zip Code"
+          />
+        </div>
+        <div class="not-applicable">
+          <p-check-box
+            [value]="true"
+            binary="true"
+            inputId="notApplicableResidence"
+            formControlName="notApplicableResidence"
+          ></p-check-box>
+          <label for="notApplicableResidence" class="sub-labels"
+            >Not applicable?</label
+          >
+        </div>
+      </div>
+
+      <div class="address-text" style="margin-bottom: 1rem">
+        <div style="display: flex; gap: 0.5rem; align-items: center">
+          <label for="foreignOffice" scope="col" class="sub-labels"
+            >7.2) Office Address of the Applicant (Foreign)</label
+          >
+          <div pTooltip="Enter office address" tooltipPosition="right">
+            <i
+              class="pi pi-info-circle"
+              style="font-size: 14px; color: #748297"
+            ></i>
+          </div>
+        </div>
+        <p-checkbox
+          formControlName="sameAsAbove"
+          inputId="sameAsAbove"
+          [binary]="true"
+        ></p-checkbox>
+        <label for="sameAsAbove" class="ml-2">Same as residence address</label>
+      </div>
+
+      <div formGroupName="foreignOffice" class="input-grid">
+        <div class="input-item">
+          <label for="foreignFlatNum"
+            >Flat / Room / Door / Block No / Apartment</label
+          >
+          <input
+            id="foreignFlatNum"
+            type="text"
+            pInputText
+            formControlName="foreignFlatNum"
+            placeholder="Enter Details"
+          />
+        </div>
+        <div class="input-item">
+          <label for="foreignBuildingName">Name of Premises/Building</label>
+          <input
+            id="foreignBuildingName"
+            type="text"
+            pInputText
+            formControlName="foreignBuildingName"
+            placeholder="Enter Name of Premises/Building"
+          />
+        </div>
+        <div class="input-item">
+          <label for="foreignRoadName"
+            >Road / Street / Lane / Post Office</label
+          >
+          <input
+            id="foreignRoadName"
+            type="text"
+            pInputText
+            formControlName="foreignRoadName"
+            placeholder="Enter Details"
+          />
+        </div>
+      </div>
+
+      <div formGroupName="foreignOffice" class="input-grid">
+        <div class="input-item">
+          <label for="foreignAreaName">Area / Locality / Sub-Division</label>
+          <input
+            id="foreignAreaName"
+            type="text"
+            pInputText
+            formControlName="foreignAreaName"
+            placeholder="Enter Details"
+          />
+        </div>
+        <div class="input-item">
+          <label for="foreignTownName"
+            >Town / City / District <span>*</span></label
+          >
+          <input
+            id="foreignTownName"
+            type="text"
+            pInputText
+            formControlName="foreignTownName"
+            placeholder="Enter Town/City/District"
+          />
+        </div>
+        <div class="input-item">
+          <label for="foreignStateName">State <span>*</span></label>
+          <input
+            id="foreignStateName"
+            type="text"
+            pInputText
+            formControlName="foreignStateName"
+            placeholder="Enter State"
+          />
+        </div>
+      </div>
+
+      <div formGroupName="foreignOffice" class="input-grid">
+        <div class="input-item">
+          <label for="foreignCountryName">Country Name <span>*</span></label>
+          <p-select
+            id="foreignCountryName"
+            formControlName="foreignCountryName"
+            placeholder="Select Country Name"
+            [options]="countries"
+            optionLabel="name"
+            [filterBy]="'name'"
+            class="full-width"
+            [filter]="true"
+            [showClear]="true"
+            appendTo="body"
+          ></p-select>
+        </div>
+        <div class="input-item">
+          <label for="foreignZipName">Zip Code <span>*</span></label>
+          <input
+            id="foreignZipName"
+            type="text"
+            pInputText
+            formControlName="foreignZipName"
+            placeholder="Enter Zip Code"
+            [disabled]="formGroup.get('notApplicableForeignOffice')?.value"
+          />
+        </div>
+        <div class="not-applicable">
+          <p-check-box
+            [value]="true"
+            binary="true"
+            inputId="notApplicableForeignOffice"
+            formControlName="notApplicableForeignOffice"
+          ></p-check-box>
+          <label for="notApplicableForeignOffice" class="sub-labels"
+            >Not applicable?</label
+          >
+        </div>
+      </div>
+
+      <div class="office">
+        <div style="display: flex; gap: 3rem; align-items: center">
+          <div style="display: flex; gap: 0.5rem; align-items: center">
+            <label for="OfficeInIndiaRadio" class="sub-labels"
+              >Do You Have Office in India?</label
+            >
+            <div pTooltip="Select yes or no" tooltipPosition="right">
+              <i
+                class="pi pi-info-circle"
+                style="font-size: 14px; color: #748297"
+              ></i>
+            </div>
+          </div>
+          <div formGroupName="OfficeInIndia" style="display: flex; gap: 2rem">
+            <div style="display: flex; align-items: center">
+              <p-radioButton
+                [value]="true"
+                formControlName="OfficeInIndiaRadio"
+                inputId="officeInIndiaYes"
+              ></p-radioButton>
+              <label
+                for="officeInIndiaYes"
+                class="sub-labels"
+                style="margin-left: 1rem"
+                >Yes</label
+              >
+            </div>
+            <div style="display: flex; align-items: center">
+              <p-radioButton
+                [value]="false"
+                formControlName="OfficeInIndiaRadio"
+                inputId="officeInIndiaNo"
+              ></p-radioButton>
+              <label
+                for="officeInIndiaNo"
+                class="sub-labels"
+                style="margin-left: 1rem"
+                >No</label
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        formGroupName="OfficeInIndia"
+        *ngIf="
+          formGroup.get('OfficeInIndia.OfficeInIndiaRadio')?.value === true
+        "
+      >
+        <div class="address-text" style="margin-bottom: 1rem">
+          <div style="display: flex; gap: 0.5rem; align-items: center">
+            <label for="indianFlatNum" scope="col" class="sub-labels"
+              >7.2.1) Indian Office Address of the Applicant</label
+            >
+            <div pTooltip="Enter office address" tooltipPosition="right">
+              <i
+                class="pi pi-info-circle"
+                style="font-size: 14px; color: #748297"
+              ></i>
+            </div>
+          </div>
+        </div>
+        <div class="input-grid">
+          <div class="input-item">
+            <label for="indianFlatNum"
+              >Flat / Room / Door / Block No / Apartment</label
+            >
+            <input
+              id="indianFlatNum"
+              type="text"
+              pInputText
+              formControlName="indianFlatNum"
+              placeholder="Enter Details"
+            />
+          </div>
+          <div class="input-item">
+            <label for="indianBuildingName">Name of Premises/Building</label>
+            <input
+              id="indianBuildingName"
+              type="text"
+              pInputText
+              formControlName="indianBuildingName"
+              placeholder="Enter Name of Premises/Building"
+            />
+          </div>
+          <div class="input-item">
+            <label for="indianRoadName"
+              >Road / Street / Lane / Post Office</label
+            >
+            <input
+              id="indianRoadName"
+              type="text"
+              pInputText
+              formControlName="indianRoadName"
+              placeholder="Enter Details"
+            />
+          </div>
+        </div>
+
+        <div class="input-grid">
+          <div class="input-item">
+            <label for="indianAreaName">Area / Locality / Sub-Division</label>
+            <input
+              id="indianAreaName"
+              type="text"
+              pInputText
+              formControlName="indianAreaName"
+              placeholder="Enter Details"
+            />
+          </div>
+          <div class="input-item">
+            <label for="indianTownName"
+              >Town / City / District <span>*</span></label
+            >
+            <input
+              id="indianTownName"
+              type="text"
+              pInputText
+              formControlName="indianTownName"
+              placeholder="Enter Town/City/District"
+            />
+          </div>
+          <div class="input-item">
+            <label for="indianStateName">State <span>*</span></label>
+            <input
+              id="indianStateName"
+              type="text"
+              pInputText
+              formControlName="indianStateName"
+              placeholder="Enter State"
+            />
+          </div>
+        </div>
+
+        <div class="input-grid">
+          <div class="input-item">
+            <label for="indianCountryName">Country Name <span>*</span></label>
+            <p-select
+              id="indianCountryName"
+              formControlName="indianCountryName"
+              placeholder="Select Country Name"
+              [options]="countries"
+              optionLabel="name"
+              [filterBy]="'name'"
+              class="full-width"
+              [filter]="true"
+              [showClear]="true"
+              appendTo="body"
+            ></p-select>
+          </div>
+          <div class="input-item">
+            <label for="indianZipName">Zip Code <span>*</span></label>
+            <input
+              id="indianZipName"
+              type="text"
+              pInputText
+              formControlName="indianZipName"
+              placeholder="Enter Zip Code"
+              [disabled]="
+                formGroup.get('OfficeInIndia.notApplicableIndOffice')?.value
+              "
+            />
+          </div>
+          <div class="not-applicable">
+            <p-check-box
+              [value]="true"
+              binary="true"
+              inputId="notApplicableIndOffice"
+              formControlName="notApplicableIndOffice"
+            ></p-check-box>
+            <label for="notApplicableIndOffice" class="sub-labels"
+              >Not applicable?</label
+            >
+          </div>
+        </div>
+      </div>
+
+      <div
+        style="
+          display: flex;
+          flex-direction: column;
+          gap: 2rem;
+          margin-bottom: 2rem;
+        "
+      >
+        <div style="display: flex; gap: 0.5rem; align-items: center">
+          <label for="communicationAddress" scope="col" class="sub-labels"
+            >7.3) Address of Communication/Correspondence <span>*</span></label
+          >
+          <div
+            pTooltip="Select the communication address"
+            tooltipPosition="right"
+          >
+            <i
+              class="pi pi-info-circle"
+              style="font-size: 14px; color: #748297"
+            ></i>
+          </div>
+        </div>
+        <div style="display: flex; gap: 3rem; align-items: center">
+          <div class="radio">
+            <p-radioButton
+              value="registered"
+              formControlName="communicationAddress"
+              inputId="registeredAddress"
+            ></p-radioButton>
+            <label for="registeredAddress" class="sub-labels"
+              >Registered / Residence</label
+            >
+          </div>
+          <div class="radio">
+            <p-radioButton
+              value="foreign"
+              formControlName="communicationAddress"
+              inputId="foreignAddress"
+            ></p-radioButton>
+            <label for="foreignAddress" class="sub-labels"
+              >Office Address (Foreign)</label
+            >
+          </div>
+          <div
+            class="radio"
+            *ngIf="
+              formGroup.get('OfficeInIndia.OfficeInIndiaRadio')?.value === true
+            "
+          >
+            <p-radioButton
+              value="indian"
+              formControlName="communicationAddress"
+              inputId="indianAddress"
+            ></p-radioButton>
+            <label for="indianAddress" class="sub-labels"
+              >Office Address India</label
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <div style="display: flex; gap: 0.5rem; align-items: center">
+        <label for="contactDetails" scope="col" class="sub-labels"
+          >7.4) Contact Details</label
+        >
+        <div pTooltip="Enter contact details" tooltipPosition="right">
+          <i
+            class="pi pi-info-circle"
+            style="font-size: 14px; color: #748297"
+          ></i>
+        </div>
+      </div>
+      <p-table
+        showGridlines
+        [value]="contactData"
+        [responsiveLayout]="'scroll'"
+        class="p-datatable-striped"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th scope="col" rowspan="4">ID</th>
+            <th scope="col" rowspan="4" class="sub-labels">Particulars</th>
+            <th scope="col" rowspan="4" class="sub-labels">Type</th>
+            <th scope="col">Country Code</th>
+            <th scope="col">Area/STD Code</th>
+            <th scope="col">Number</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+          <tr formGroupName="contactDetails">
+            <td rowspan="3">{{ item.id }}</td>
+            <td rowspan="3">Telephone Number</td>
+            <td>Registered / Residence</td>
+            <td formGroupName="registered">
+              <p-select
+                id="registeredCountryCode"
+                formControlName="countryCode"
+                placeholder="Enter Country Code"
+                [options]="countryCodes"
+                optionLabel="code"
+                [filterBy]="'code'"
+                class="full-width"
+                [filter]="true"
+                [showClear]="true"
+                appendTo="body"
+              ></p-select>
+            </td>
+            <td formGroupName="registered">
+              <input
+                id="registeredAreaCode"
+                type="text"
+                pInputText
+                placeholder="Enter Area Code"
+                formControlName="areaCode"
+              />
+            </td>
+            <td formGroupName="registered">
+              <input
+                id="registeredNumber"
+                type="text"
+                pInputText
+                placeholder="Enter Number"
+                formControlName="number"
+              />
+            </td>
+          </tr>
+          <tr formGroupName="contactDetails">
+            <td>Office</td>
+            <td formGroupName="office">
+              <p-select
+                id="officeCountryCode"
+                formControlName="countryCode"
+                placeholder="Enter Country Code"
+                [options]="countryCodes"
+                optionLabel="code"
+                [filterBy]="'code'"
+                class="full-width"
+                [filter]="true"
+                [showClear]="true"
+                appendTo="body"
+              ></p-select>
+            </td>
+            <td formGroupName="office">
+              <input
+                id="officeAreaCode"
+                type="text"
+                pInputText
+                placeholder="Enter Area Code"
+                formControlName="areaCode"
+              />
+            </td>
+            <td formGroupName="office">
+              <input
+                id="officeNumber"
+                type="text"
+                pInputText
+                placeholder="Enter Number"
+                formControlName="number"
+              />
+            </td>
+          </tr>
+          <tr
+            formGroupName="contactDetails"
+            *ngIf="
+              formGroup.get('OfficeInIndia.OfficeInIndiaRadio')?.value === true
+            "
+          >
+            <td>Indian Office</td>
+            <td formGroupName="indianOffice">
+              <p-select
+                id="indianCountryCode"
+                formControlName="countryCode"
+                placeholder="Enter Country Code"
+                [options]="countryCodes"
+                optionLabel="code"
+                [filterBy]="'code'"
+                class="full-width"
+                [filter]="true"
+                [showClear]="true"
+                appendTo="body"
+              ></p-select>
+            </td>
+            <td formGroupName="indianOffice">
+              <input
+                id="indianAreaCode"
+                type="number"
+                pInputText
+                placeholder="Enter Area Code"
+                formControlName="areaCode"
+              />
+            </td>
+            <td formGroupName="indianOffice">
+              <input
+                id="indianNumber"
+                type="number"
+                pInputText
+                placeholder="Enter Number"
+                formControlName="number"
+              />
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <!-- Section 8: Investment Manager -->
+    <div class="input-group">
+      <div style="display: flex; gap: 0.5rem; align-items: center">
+        <label for="investmentManagerTable">
+          8) Information Pertaining to Investment Manager
+          <span>*</span>
+        </label>
+        <div
+          pTooltip="Provide details for each investment manager"
+          tooltipPosition="right"
+        >
+          <i
+            class="pi pi-info-circle"
+            style="font-size: 14px; color: #748297"
+          ></i>
+        </div>
+      </div>
+      <p-table
+        id="investmentManagerTable"
+        [value]="managers.controls"
+        showGridlines="true"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th scope="col" class="sub-labels">
+              Information Pertaining to Investment Manager
+            </th>
+            <th scope="col" class="sub-labels">Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-manager let-i="rowIndex">
+          <tr>
+            <td>
+              <p-accordion [value]="'panel-' + i">
+                <p-accordion-panel [value]="'panel-' + i">
+                  <p-accordion-header class="sub-labels">
+                    Senior Managing Official - {{ i + 1 }}
+                  </p-accordion-header>
+                  <p-accordion-content>
+                    <p-table showGridlines="true" [value]="managerFields">
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <th scope="col"></th>
+                          <th scope="col" class="sub-labels">Particulars</th>
+                          <th scope="col" class="sub-labels">Details</th>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-field>
+                        <tr [formGroup]="getManagerFormGroup(i)">
+                          <td>{{ field.id }}</td>
+                          <td>{{ field.name }}</td>
+                          <td>
+                            <ng-container
+                              *ngIf="field.id === 'c)'; else defaultInput"
+                            >
+                              <p-select
+                                [formControlName]="field.id"
+                                [options]="countries"
+                                optionLabel="name"
+                                optionValue="name"
+                                placeholder="Select Country"
+                                class="full-width"
+                                [filter]="true"
+                                [filterBy]="'name'"
+                                [showClear]="true"
+                                appendTo="body"
+                                [style]="{ width: '100%' }"
+                              ></p-select>
+                            </ng-container>
+                            <ng-template #defaultInput>
+                              <input
+                                type="text"
+                                pInputText
+                                [formControlName]="field.id"
+                                placeholder="Enter Details"
+                              />
+                            </ng-template>
+                          </td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
+                  </p-accordion-content>
+                </p-accordion-panel>
+              </p-accordion>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button
+                  pButton
+                  icon="pi pi-plus"
+                  class="p-button-rounded p-button-text"
+                  (click)="addManager()"
+                ></button>
+                <button
+                  pButton
+                  icon="pi pi-trash"
+                  class="p-button-rounded p-button-text p-button-danger"
+                  (click)="removeManager(i)"
+                  [disabled]="managers.length === 1"
+                ></button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <!-- Section 9: Compliance Officer -->
+    <div class="input-group">
+      <div style="display: flex; gap: 0.5rem; align-items: center">
+        <label for="complianceOfficerSection">
+          9) Information Pertaining To The Compliance Officer
+          <span>*</span>
+        </label>
+        <div
+          pTooltip="Provide details for the compliance officer"
+          tooltipPosition="right"
+        >
+          <i
+            class="pi pi-info-circle"
+            style="font-size: 14px; color: #748297"
+          ></i>
+        </div>
+      </div>
+      <div
+        id="complianceOfficerSection"
+        class="input-grid-2"
+        formGroupName="complianceOfficerInfo"
+      >
+        <div class="input-item">
+          <label for="complianceOfficerInfoName" class="sub-labels"
+            >Name <span>*</span></label
+          >
+          <input
+            type="text"
+            id="complianceOfficerInfoName"
+            formControlName="complianceOfficerInfoName"
+            pInputText
+            placeholder="Enter Name"
+          />
+          <div
+            *ngIf="
+              formGroup.get('complianceOfficerInfoName')?.invalid &&
+              formGroup.get('complianceOfficerInfoName')?.touched
+            "
+            class="error"
+          >
+            This field is required.
+          </div>
+        </div>
+        <div class="input-item">
+          <label for="complianceOfficerInfoJob" class="sub-labels"
+            >Job Title <span>*</span></label
+          >
+          <input
+            type="text"
+            id="complianceOfficerInfoJob"
+            formControlName="complianceOfficerInfoJob"
+            pInputText
+            placeholder="Enter Job Title"
+          />
+          <div
+            *ngIf="
+              formGroup.get('complianceOfficerInfoJob')?.invalid &&
+              formGroup.get('complianceOfficerInfoJob')?.touched
+            "
+            class="error"
+          >
+            This field is required.
+          </div>
+        </div>
+      </div>
+
+      <div formGroupName="complianceOfficerInfo">
+        <div class="input-grid-2">
+          <div class="input-item">
+            <label for="complianceOfficerInfoMobile" class="sub-labels">
+              Telephone Number <span>*</span>
+            </label>
+            <input
+              type="text"
+              id="complianceOfficerInfoMobile"
+              pInputText
+              placeholder="Enter Telephone Number"
+              formControlName="complianceOfficerInfoMobile"
+            />
+            <div
+              *ngIf="
+                formGroup.get('complianceOfficerInfoMobile')?.invalid &&
+                formGroup.get('complianceOfficerInfoMobile')?.touched
+              "
+              class="error"
+            >
+              This field is required.
+            </div>
+          </div>
+          <div class="input-item">
+            <label for="complianceOfficerInfoFax" class="sub-labels"
+              >Fax Number <span>*</span></label
+            >
+            <input
+              type="text"
+              id="complianceOfficerInfoFax"
+              formControlName="complianceOfficerInfoFax"
+              pInputText
+              placeholder="Enter Fax Number"
+            />
+            <div
+              *ngIf="
+                formGroup.get('complianceOfficerInfoFax')?.invalid &&
+                formGroup.get('complianceOfficerInfoFax')?.touched
+              "
+              class="error"
+            >
+              This field is required.
+            </div>
+          </div>
+        </div>
+        <div class="input-grid-2" style="margin-top: 1rem">
+          <div class="input-item">
+            <label for="complianceOfficerInfoEmail" class="sub-labels"
+              >Email Id <span>*</span></label
+            >
+            <input
+              type="email"
+              id="complianceOfficerInfoEmail"
+              formControlName="complianceOfficerInfoEmail"
+              pInputText
+              placeholder="Enter Email"
+            />
+            <div
+              *ngIf="
+                formGroup.get('complianceOfficerInfoEmail')?.invalid &&
+                formGroup.get('complianceOfficerInfoEmail')?.touched
+              "
+              class="error"
+            >
+              This field is required.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label for="ultimateBeneficialOwner" scope="col">
+        10) Information regarding Ultimate Beneficial Owner (End Natural Person)
+        <span>*</span>
+      </label>
+      <div>
+        <label for="ultimateBeneficialOwner" class="sub-labels">
+          10.1) Individual Custodian/DDPs may seek additional
+          documentation/Ownership details at a lower threshold than prescribed,
+          based on their independent evaluation and risk classification of the
+          respective FPI applicants.
+        </label>
+        <div
+          class="condition"
+          style="display: flex; flex-direction: column; gap: 3rem"
+        >
+          <div>
+            <p-radioButton
+              name="ultimateBeneficialOwner"
+              [value]="false"
+              formControlName="ultimateBeneficialOwner"
+              inputId="ultimateBeneficialOwnerNo"
+            ></p-radioButton>
+            <label
+              for="ultimateBeneficialOwnerNo"
+              class="sub-labels"
+              style="margin-left: 1rem"
+            >
+              We declare that there is no natural person/individual ultimately
+              holding beneficial ownership or control.
+            </label>
+          </div>
+          <div style="display: flex; align-items: center">
+            <p-radioButton
+              name="ultimateBeneficialOwner"
+              [value]="true"
+              formControlName="ultimateBeneficialOwner"
+              inputId="ultimateBeneficialOwnerYes"
+            ></p-radioButton>
+            <label
+              for="ultimateBeneficialOwnerYes"
+              class="sub-labels"
+              style="margin-left: 1rem"
+            >
+              The list of beneficial owners as per materiality threshold is
+              provided below.
+            </label>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="formGroup.get('ultimateBeneficialOwner')?.value === true">
+        <p-table
+          [value]="managingOfficialRows.controls"
+          showGridlines
+          [responsiveLayout]="'scroll'"
+          [style]="{ 'margin-left': '2rem' }"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th scope="col" class="sub-labels">
+                Details of the senior managing official of the FPI
+              </th>
+              <th scope="col" class="sub-labels">Actions</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowForm let-index="rowIndex">
+            <tr [formGroup]="rowForm" class="table-header">
+              <td>
+                <p-accordion [value]="'panel-' + index">
+                  <p-accordion-panel [value]="'panel-' + index">
+                    <p-accordion-header class="sub-labels">
+                      Senior managing official - {{ index + 1 }}
+                    </p-accordion-header>
+                    <p-accordion-content>
+                      <p-table
+                        [value]="detailsData"
+                        showGridlines
+                        [responsiveLayout]="'scroll'"
+                        class="p-datatable-striped"
+                      >
+                        <ng-template pTemplate="header">
+                          <tr class="table-header">
+                            <th scope="col"></th>
+                            <th scope="col" class="sub-labels">Particulars</th>
+                            <th scope="col" class="sub-labels">Details</th>
+                          </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-item>
+                          <tr formGroupName="details">
+                            <td>{{ item.id }}</td>
+                            <td id="table-text">{{ item.text }}</td>
+                            <td>
+                              <input
+                                *ngIf="item.type === 'text'"
+                                id="detail{{ item.id }}"
+                                type="text"
+                                pInputText
+                                [formControlName]="item.id"
+                                placeholder="{{ item.placeHolder }}"
+                                [ngClass]="{
+                                  'ng-invalid ng-dirty': hasError(
+                                    index,
+                                    item.id
+                                  )
+                                }"
+                              />
+                              <p-datepicker
+                                *ngIf="item.type === 'date'"
+                                id="detailDate{{ item.id }}"
+                                dateFormat="dd/mm/yy"
+                                [showIcon]="true"
+                                appendTo="body"
+                                [formControlName]="item.id"
+                                class="full-width"
+                                [ngClass]="{
+                                  'ng-invalid ng-dirty': hasError(
+                                    index,
+                                    item.id
+                                  )
+                                }"
+                              ></p-datepicker>
+                              <p
+                                class="p-error"
+                                *ngIf="hasError(index, item.id)"
+                              >
+                                This field is required
+                              </p>
+                              <p-select
+                                *ngIf="item.type === 'dropdown'"
+                                id="detailSelect{{ item.id }}"
+                                [options]="item.options"
+                                placeholder="{{ item.placeHolder }}"
+                                [formControlName]="item.id"
+                                class="full-width"
+                              ></p-select>
+                            </td>
+                          </tr>
+                        </ng-template>
+                      </p-table>
+                    </p-accordion-content>
+                  </p-accordion-panel>
+                </p-accordion>
+              </td>
+              <td id="action-btns">
+                <p-button
+                  *ngIf="index === managingOfficialRows.length - 1"
+                  icon="pi pi-plus"
+                  [rounded]="true"
+                  (onClick)="addManagingOfficialRow()"
+                ></p-button>
+                <p-button
+                  *ngIf="managingOfficialRows.length > 1"
+                  icon="pi pi-trash"
+                  [rounded]="true"
+                  severity="danger"
+                  (onClick)="removeManagingOfficialRow(index)"
+                ></p-button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      <div class="residence" style="margin-left: -0.25rem">
+        <label for="beneficialOwnership" class="sub-labels">
+          10.2) Does it have few persons or persons of the same family holding
+          beneficial ownership and control?
+        </label>
+        <div style="display: flex; gap: 2rem">
+          <div style="display: flex; align-items: center">
+            <p-radioButton
+              [value]="true"
+              formControlName="beneficialOwnership"
+              inputId="beneficialOwnershipYes"
+            ></p-radioButton>
+            <label
+              for="beneficialOwnershipYes"
+              class="sub-labels"
+              style="margin-left: 1rem"
+              >Yes</label
+            >
+          </div>
+          <div style="display: flex; align-items: center">
+            <p-radioButton
+              [value]="false"
+              formControlName="beneficialOwnership"
+              inputId="beneficialOwnershipNo"
+            ></p-radioButton>
+            <label
+              for="beneficialOwnershipNo"
+              class="sub-labels"
+              style="margin-left: 1rem"
+              >No</label
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-group2" style="margin-bottom: 3rem">
+      <div style="display: flex; gap: 0.5rem; align-items: center">
+        <label for="incomeDetails" scope="col"
+          >11) Income Details <span>*</span></label
+        >
+        <div pTooltip="Enter income details" tooltipPosition="right">
+          <i
+            class="pi pi-info-circle"
+            style="font-size: 14px; color: #748297"
+          ></i>
+        </div>
+      </div>
+      <div formGroupName="incomeDetails" class="input-group2">
+        <div class="income-item2">
+          <label for="incomeSource" class="sub-labels"
+            >a) Source of Income:
+          </label>
+          <p-select
+            id="incomeSource"
+            formControlName="incomeSource"
+            [options]="incomeSourceOptions"
+            optionLabel="name"
+            placeholder="Enter Source of Income"
+            class="full-width"
+            appendTo="body"
+          ></p-select>
+        </div>
+        <div
+          class="income-item2"
+          *ngIf="
+            formGroup.get('incomeDetails.incomeSource')?.value?.name ===
+            'Income from Business/ Profession'
+          "
+        >
+          <label for="businessCode" class="sub-labels"
+            >b) Code for Business / Profession:</label
+          >
+          <input
+            id="businessCode"
+            type="text"
+            pInputText
+            formControlName="businessCode"
+            placeholder="Enter Code for Business / Profession"
+            class="w-full md:w-56"
+          />
+        </div>
+        <div class="income-item2">
+          <label for="annualIncome" class="sub-labels"
+            >c) Annual Income (in ₹):
+          </label>
+          <input
+            id="annualIncome"
+            type="number"
+            pInputText
+            formControlName="annualIncome"
+            placeholder="Enter Your Income (in ₹)"
+            class="w-full"
+          />
+        </div>
+        <div class="income-item2">
+          <label for="assetLess" class="sub-labels"
+            >d) Asset-less liabilities (in ₹):</label
+          >
+          <input
+            id="assetLess"
+            type="number"
+            pInputText
+            formControlName="assetLess"
+            placeholder="Specify Asset less liabilities (in ₹)"
+            class="w-full"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 12: Applicant Type -->
+    <div
+      class="input-group"
+      formGroupName="applicantType"
+      style="display: flex; flex-direction: column; gap: 2rem"
+    >
+      <div style="display: flex; flex-direction: column; gap: 1rem">
+        <div style="display: flex; gap: 0.5rem; align-items: center">
+          <label for="applicantTypeName"
+            >12) Type of the Applicant <span>*</span></label
+          >
+          <div pTooltip="Specify the applicant type" tooltipPosition="right">
+            <i
+              class="pi pi-info-circle"
+              style="font-size: 14px; color: #748297"
+            ></i>
+          </div>
+        </div>
+        <input
+          type="text"
+          id="applicantTypeName"
+          pInputText
+          formControlName="applicantTypeName"
+          placeholder="Enter Your Name"
+        />
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 1rem">
+        <div style="display: flex; gap: 3rem; align-items: center">
+          <div style="display: flex; gap: 0.5rem; align-items: center">
+            <label for="applicantTypeOtherEntity">
+              If any other entity or investment vehicle, please give details
+            </label>
+            <div
+              pTooltip="Select 'Yes' if there is another entity, otherwise 'No'"
+              tooltipPosition="right"
+            >
+              <i
+                class="pi pi-info-circle"
+                style="font-size: 14px; color: #748297"
+              ></i>
+            </div>
+          </div>
+          <div class="radio">
+            <p-radioButton
+              [formControlName]="'applicantTypeRadio'"
+              value="applicantTypeRadioYes"
+              inputId="applicantTypeRadioYes"
+            >
+            </p-radioButton>
+            <label for="applicantTypeRadioYes" class="sub-labels">Yes</label>
+            <p-radioButton
+              [formControlName]="'applicantTypeRadio'"
+              value="applicantTypeRadioNo"
+              inputId="applicantTypeRadioNo"
+            >
+            </p-radioButton>
+            <label for="applicantTypeRadioNo" class="sub-labels">No</label>
+          </div>
+        </div>
+        <input
+          type="text"
+          pInputText
+          placeholder="Enter Details"
+          *ngIf="
+            formGroup.get('applicantType.applicantTypeRadio')?.value ===
+            'applicantTypeRadioYes'
+          "
+          formControlName="applicantTypeOtherEntity"
+          id="applicantTypeOtherEntity"
+        />
+      </div>
+    </div>
+
+    <div class="input-group">
+      <div style="display: flex; gap: 0.5rem; align-items: center">
+        <label for="typeOfEntity" scope="col"
+          >13) Type of Entity <span>*</span></label
+        >
+        <div pTooltip="Select the type of entity" tooltipPosition="right">
+          <i
+            class="pi pi-info-circle"
+            style="font-size: 14px; color: #748297"
+          ></i>
+        </div>
+      </div>
+      <p-select
+        id="typeOfEntity"
+        formControlName="typeOfEntity"
+        [options]="income"
+        optionLabel="name"
+        placeholder="Select Type of Entity"
+        class="w-full md:w-56"
+        appendTo="body"
+      ></p-select>
+    </div>
+
+    <div class="input-group">
+      <div style="display: flex; gap: 0.5rem; align-items: center">
+        <label for="documentSubmitted" scope="col"
+          >14) Document submitted as Proof of Identity (POI) and Proof of
+          Address (POA) <span>*</span></label
+        >
+        <div pTooltip="Select document" tooltipPosition="right">
+          <i
+            class="pi pi-info-circle"
+            style="font-size: 14px; color: #748297"
+          ></i>
+        </div>
+      </div>
+      <p-table
+        [value]="docData"
+        showGridlines
+        [responsiveLayout]="'scroll'"
+        class="p-datatable-striped"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col" class="sub-labels">Particulars</th>
+            <th scope="col" class="sub-labels">Details</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-i="rowIndex">
+          <tr>
+            <td class="max-table-width">{{ item.id }}</td>
+            <td class="max-table-width">{{ item.name }}</td>
+            <td class="max-table-width">
+              <p-select
+                id="documentSelect{{ i }}"
+                [formControl]="$any(documentSubmitted.controls[i])"
+                placeholder="{{ item.placeHolder }}"
+                class="full-width"
+                [showClear]="true"
+                [options]="proofOfIdentityOptions"
+                optionLabel="name"
+                optionValue="code"
+                appendTo="body"
+              ></p-select>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <div class="input-group">
+      <div style="display: flex; gap: 0.5rem; align-items: center">
+        <label for="politicallyExposed" scope="col"
+          >15) Whether the applicant or the applicant's authorized signatories
+          is <span>*</span></label
+        >
+        <div pTooltip="Select option" tooltipPosition="right">
+          <i
+            class="pi pi-info-circle"
+            style="font-size: 14px; color: #748297"
+          ></i>
+        </div>
+      </div>
+      <div class="chose">
+        <div class="last-item">
+          <div style="display: flex; gap: 0.5rem; align-items: center">
+            <label for="politicallyExposed" class="sub-labels"
+              >a) A politically exposed person</label
+            >
+            <div pTooltip="Select option" tooltipPosition="right">
+              <i
+                class="pi pi-info-circle"
+                style="font-size: 14px; color: #748297"
+              ></i>
+            </div>
+          </div>
+          <div style="display: flex; gap: 2rem">
+            <div style="display: flex; align-items: center">
+              <p-radioButton
+                value="politicallyExposedYes"
+                formControlName="politicallyExposed"
+                inputId="politicallyExposedYes"
+              ></p-radioButton>
+              <label
+                for="politicallyExposedYes"
+                class="sub-labels"
+                style="margin-left: 1rem"
+                >Yes</label
+              >
+            </div>
+            <div style="display: flex; align-items: center">
+              <p-radioButton
+                value="politicallyExposedNo"
+                formControlName="politicallyExposed"
+                inputId="politicallyExposedNo"
+              ></p-radioButton>
+              <label
+                for="politicallyExposedNo"
+                class="sub-labels"
+                style="margin-left: 1rem"
+                >No</label
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="last-item">
+          <div style="display: flex; gap: 0.5rem; align-items: center">
+            <label for="relatedToPoliticallyExposed" class="sub-labels"
+              >b) Related to a politically exposed person</label
+            >
+            <div pTooltip="Select option" tooltipPosition="right">
+              <i
+                class="pi pi-info-circle"
+                style="font-size: 14px; color: #748297"
+              ></i>
+            </div>
+          </div>
+          <div style="display: flex; gap: 2rem">
+            <div style="display: flex; align-items: center">
+              <p-radioButton
+                value="relatedToPoliticallyExposedYes"
+                formControlName="relatedToPoliticallyExposed"
+                inputId="relatedToPoliticallyExposedYes"
+              ></p-radioButton>
+              <label
+                for="relatedToPoliticallyExposedYes"
+                class="sub-labels"
+                style="margin-left: 1rem"
+                >Yes</label
+              >
+            </div>
+            <div style="display: flex; align-items: center">
+              <p-radioButton
+                value="relatedToPoliticallyExposedNo"
+                formControlName="relatedToPoliticallyExposed"
+                inputId="relatedToPoliticallyExposedNo"
+              ></p-radioButton>
+              <label
+                for="relatedToPoliticallyExposedNo"
+                class="sub-labels"
+                style="margin-left: 1rem"
+                >No</label
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <app-loader *ngIf="showLoader"></app-loader>
+</div>

@@ -1,0 +1,134 @@
+main {
+  background: #f5f5fa;
+}
+
+.faq-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.faq-header {
+  text-align: center;
+  margin-bottom: 30px;
+
+  h1 {
+    color: #2c3e50;
+    font-size: 3rem;
+    font-weight: 700;
+  }
+}
+
+.faq-subheader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+
+  .left-content {
+    flex: 2;
+    p {
+      color: #727274;
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .questions {
+      font-size: 1.5rem;
+      color: #44546f;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .regulation-text {
+      color: #7f8c8d;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .date-download {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .disclaimer {
+      color: #7f8c8d;
+      font-size: 12px;
+      line-height: 1.6;
+      padding-right: 40px;
+    }
+  }
+
+  .right-content {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    .update-date {
+      color: #7f8c8d;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    ::ng-deep .p-button {
+      background-color: transparent !important;
+      border: none !important;
+      color: #8f1709 !important;
+    }
+  }
+}
+
+.faq-items-container {
+  display: flex;
+  gap: 20px;
+
+  .faq-column {
+    flex: 1;
+  }
+}
+
+.faq-item {
+  margin-bottom: 15px;
+  background-color: #fff;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.faq-topic-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  color: #8f1709;
+  text-decoration: none;
+  font-weight: 500;
+
+  span {
+    flex: 1;
+  }
+
+  i {
+    margin-left: 10px;
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .faq-items-container,
+  .faq-subheader .right-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .faq-subheader {
+    .disclaimer {
+      padding: 0 40px;
+    }
+  }
+}

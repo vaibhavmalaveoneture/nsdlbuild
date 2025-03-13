@@ -1,0 +1,28 @@
+<div class="faq">
+  <h1>Frequently Asked Questions</h1>
+  <div class="faq-grid">
+    <p-accordion [value]="faqTabs[0].value">
+      @for (tab of faqTabs; track tab.title) {
+      <p-accordion-panel [value]="tab.value">
+        <p-accordion-header>
+          {{ tab.title }}
+          <ng-template #toggleicon let-active="active">
+            @if (active) {
+            <i class="pi pi-minus"></i>
+            } @else {
+            <i class="pi pi-plus"></i>
+            }
+          </ng-template>
+        </p-accordion-header>
+        <p-accordion-content>
+          <p class="m-0">{{ tab.content }}</p>
+        </p-accordion-content>
+      </p-accordion-panel>
+      }
+    </p-accordion>
+  </div>
+  <div class="action-buttons">
+    <a routerLink="/landing/faq">Read More</a>
+    <a routerLink="">Help</a>
+  </div>
+</div>

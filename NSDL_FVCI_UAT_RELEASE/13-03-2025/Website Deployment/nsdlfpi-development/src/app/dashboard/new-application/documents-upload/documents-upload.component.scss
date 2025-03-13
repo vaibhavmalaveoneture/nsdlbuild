@@ -1,0 +1,43 @@
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.form-header span {
+  color: #000;
+  font-weight: 500;
+  color: #344054;
+  font-size: 18px;
+}
+
+.form-header p {
+  margin-top: 0;
+  color: #6b778c;
+  font-size: 12px;
+}
+
+#form-title {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+input {
+  width: 100%;
+}
+
+::ng-deep .p-card-title {
+  font-size: 18px;
+}
+
+.add-document p {
+  color: #8b231d;
+  font-weight: 500;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}

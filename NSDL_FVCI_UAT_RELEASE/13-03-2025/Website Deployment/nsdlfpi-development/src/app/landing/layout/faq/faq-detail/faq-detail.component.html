@@ -1,0 +1,54 @@
+<app-header></app-header>
+<main>
+  <div class="faq-detail-container">
+    <div class="faq-header">
+      <h1>Frequently Asked Questions</h1>
+    </div>
+
+    <div class="faq-subheader">
+      <div class="left-content">
+        <p class="questions">We're here to answer all your questions.</p>
+        <div class="right-content">
+          <p class="regulation-text">
+            SEBI (FOREIGN PORTFOLIO INVESTORS) REGULATIONS, 2014
+          </p>
+          <div class="date-download">
+            <p class="update-date">As on: {{ lastUpdated }}</p>
+            <div class="download-btn">
+              <p-button icon="pi pi-download" label="Download FAQ"></p-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="faq-detail-header">
+      <div class="back-button">
+        <h1>{{ topicTitle }}</h1>
+        <a routerLink="/landing/faq">
+          <i class="pi pi-arrow-left"></i> Back to FAQs
+        </a>
+      </div>
+    </div>
+
+    <div class="faq-detail-content">
+      <!-- <p-accordion>
+        <p-accordionTab
+          *ngFor="let item of faqDetailItems"
+          [header]="item.question"
+        >
+          <p>{{ item.answer }}</p>
+        </p-accordionTab>
+      </p-accordion> -->
+      <p-accordion [value]="0">
+        @for (tab of faqDetailItems; track tab.question) {
+        <p-accordion-panel [value]="tab.question">
+          <p-accordion-header>{{ tab.question }}</p-accordion-header>
+          <p-accordion-content>
+            <p class="m-0">{{ tab.answer }}</p>
+          </p-accordion-content>
+        </p-accordion-panel>
+        }
+      </p-accordion>
+    </div>
+  </div>
+</main>

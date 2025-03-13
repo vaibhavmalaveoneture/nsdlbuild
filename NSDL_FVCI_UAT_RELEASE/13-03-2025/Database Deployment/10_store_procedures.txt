@@ -1,0 +1,571 @@
+CREATE PROCEDURE sp_approverejectappliation
+                            @ApplicationId INT,
+                            @Status VARCHAR(50),
+                            @Remarks VARCHAR(255),
+                            @RoleCode VARCHAR(50)
+                        AS
+                        BEGIN
+                            SET NOCOUNT ON;
+
+                            DECLARE @StateSide VARCHAR(50);
+
+                            IF @Status = 'approve' AND @RoleCode = 'DDPM'
+                                SELECT @StateSide = StatusID FROM nsdl.statusmaster WHERE statuscode = 'DDP_MAKER_APPROVE';
+                            ELSE IF @Status = 'approve' AND @RoleCode = 'DDPC'
+                                SELECT @StateSide = StatusID FROM nsdl.statusmaster WHERE statuscode = 'DDP_CHECKER_APPROVE';
+                            ELSE IF @Status = 'reject' AND @RoleCode = 'DDPM'
+                                SELECT @StateSide = StatusID FROM nsdl.statusmaster WHERE statuscode = 'DDP_MAKER_REJECT';
+                            ELSE IF @Status = 'reject' AND @RoleCode = 'DDPC'
+                                SELECT @StateSide = StatusID FROM nsdl.statusmaster WHERE statuscode = 'DDP_CHECKER_REJECT';
+
+                            UPDATE nsdl.fvci_applications
+                            SET 
+                                remarks = @Remarks,
+                                status = @StateSide,
+                                updated_at = GETDATE()
+                            WHERE application_id = @ApplicationId;
+
+                            IF @@ROWCOUNT = 0
+                            BEGIN
+                                PRINT 'No records updated. User ID might not exist.';
+                            END
+                        END;
+
+
+
+CREATE PROCEDURE SP_CheckDuplicateEmailOrPhone
+    @EmailId VARCHAR(255),
+    @Number VARCHAR(20)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT COUNT(1) 
+    FROM [nsdl.user_registrations 
+    WHERE email_id = @EmailId OR number = @Number;
+END;
+
+
+-- SP_GetAllUserRegistrations
+CREATE PROCEDURE SP_GetAllUserRegistrations
+    @DdpId INT = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+    IF @DdpId IS NULL
+        SELECT * FROM [nsdl.user_registrations WHERE verification_flag > 1;
+    ELSE
+        SELECT * FROM [nsdl.user_registrations WHERE ddp = @DdpId;
+END;
+
+
+
+
+CREATE PROCEDURE NSDL.SP_GetDashboardData  
+AS  
+BEGIN  
+    SET NOCOUNT ON;
+	SELECT 
+        1000 AS total_fpi_count,  
+        500 AS total_fvci_count; 
+       
+       
+    DECLARE @CountryData1 TABLE (  
+        name NVARCHAR(100),  
+        total_count INT,  
+        flag_link NVARCHAR(255), 
+        country_code NVARCHAR(2)
+    );  
+
+    INSERT INTO @CountryData1 (name, total_count, flag_link, country_code)  
+    VALUES  
+        ('AUSTRALIA', 300, 'AU', 'AU'),  
+        ('AUSTRIA', 250, 'AT', 'AT'),
+        ('BAHRAIN', 250, 'UA', 'UA'),
+        ('India', 250, 'UA', 'AT'), 
+        ('AUSTRALIA', 300, 'AU', 'AU'),  
+        ('AUSTRIA', 250, 'AT', 'AT'),
+        ('BAHRAIN', 250, 'UA', 'UA'),
+        ('India', 250, 'UA', 'AT'),
+        ('BAHRAIN', 250, 'UA', 'UA'),
+        ('BELGIUM', 150, 'UA', 'BE');  
+
+    SELECT * FROM @CountryData1;  
+   	
+ 
+END;
+
+
+CREATE PROCEDURE SP_GetMasterTables
+    @Type VARCHAR(50) = '' -- Default to empty string for all tables
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF @Type = '' OR @Type = 'ATS'
+    BEGIN
+        SELECT * FROM ATS_MSTR_TBL;
+    END
+
+    IF @Type = '' OR @Type = 'bank'
+    BEGIN
+        SELECT BKM_ID bank_id,BKM_Bnk_Id bank_code,BKM_Bnk_Nm bank_name,BKM_Crt_DTM created_dtm,BKM_Upd_DTM modified_dtm FROM Bnk_Mstr;
+    END
+
+    IF @Type = '' OR @Type = 'CAFApplicantStatus'
+    BEGIN
+        SELECT * FROM CAF_Applicant_Status_MSTR;
+    END
+
+    IF @Type = '' OR @Type = 'CAFMasterApplicantStatus'
+    BEGIN
+        SELECT * FROM CAF_MASTER_APPLICANT_STATUS;
+    END
+
+    IF @Type = '' OR @Type = 'CAFMasterBusProf'
+    BEGIN
+        SELECT * FROM CAF_MASTER_BUS_PROF;
+    END
+
+    IF @Type = '' OR @Type = 'proof_of_address'
+    BEGIN
+        SELECT POA_DOC_CD code,POA_DOC_NM name FROM CAF_MASTER_POA_DOC;
+    END
+
+    IF @Type = '' OR @Type = 'proof_of_identity'
+    BEGIN
+        SELECT POI_DOC_CD code,POI_DOC_NM name FROM CAF_MASTER_POI_DOC;
+    END
+
+    IF @Type = '' OR @Type = 'source_of_income'
+    BEGIN
+        SELECT SRC_INCOMECD code,SRC_INCOME_NM name FROM CAF_MASTER_SOI;
+    END
+
+    IF @Type = '' OR @Type = 'country' -- or CountryCodeFinal depending on which one is correct.
+    BEGIN
+        SELECT RMC_SRNo country_id, RMC_CODE_NAME country_name, DMT_ISD_CODE country_code,RMC_CRT_DT created_dtm,RMC_UPDT_DT modified_dtm FROM Country_Code_Master; -- or Country_Code_Master depending on the correct table name.
+    END
+
+    IF @Type = '' OR @Type = 'custodian'
+    BEGIN
+        SELECT Cust_Id cust_id,Cust_Reg_No cust_reg_no,Cust_nm cust_nm,Created_dtm created_dtm,Modified_dtm modified_dtm FROM Custodian_MSTR_TBL;
+    END
+
+    IF @Type = '' OR @Type = 'ddp'
+    BEGIN
+        SELECT DDP_ID sebi_registration_no,Created_dtm created_dtm,Modified_dtm modified_dtm,DMT_DDP_NM_CD ddp_id,DMT_DDP_NM ddp_name FROM DDP_MSTR_TBL;
+    END
+
+    IF @Type = '' OR @Type = 'FormAStatus'
+    BEGIN
+        SELECT * FROM FormA_Status_Master;
+    END
+    
+    IF @Type = '' OR @Type = 'prior_associations'
+    BEGIN
+        SELECT * FROM [nsdl.prior_association_master pam;
+    END
+    
+    IF @Type = '' OR @Type = 'type_of_entity'
+    BEGIN
+        SELECT * FROM [nsdl.type_of_entity_master toem;
+    END
+    
+    IF @Type = '' OR @Type = 'code_of_business'
+    BEGIN
+        SELECT * FROM [nsdl.code_of_business_master cobm ;
+    END
+END;
+
+
+CREATE PROCEDURE SP_GetOtpRecord
+    @UrId INT = NULL,
+    @UserId INT = NULL,
+    @OtpNo VARCHAR(10)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT ur_id, user_id, otp_no, used_yn, otp_dt
+    FROM otp_master
+    WHERE otp_no = @OtpNo AND used_yn = 'N'
+      AND (ur_id = @UrId OR @UrId IS NULL)
+      AND (user_id = @UserId OR @UserId IS NULL);
+
+END;
+
+
+CREATE PROCEDURE SP_GetPermissionsByRoleId
+    @RoleId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT p.id AS PermissionId, p.permission_code AS PermissionCode, p.permission AS PermissionName
+    FROM permissions p
+    JOIN role_permissions rp ON rp.permission_id = p.id
+    WHERE rp.role_id = @RoleId AND p.status = 1;
+END;
+
+
+-- SP_GetStoredPasswordHash
+CREATE PROCEDURE SP_GetStoredPasswordHash
+    @EmailId VARCHAR(255)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT password 
+    FROM [nsdl.user_registrations 
+    WHERE email_id = @EmailId;
+END;
+
+
+CREATE PROCEDURE SP_GetUserByEmail
+    @EmailId VARCHAR(255)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT * FROM users WHERE email_id = @EmailId;
+END;
+
+
+
+CREATE PROCEDURE SP_GetUserProfileById
+    @UserId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT 
+        user_id,
+        user_nm,
+        email_id,
+        contact_no,
+        address,
+        role_id,
+        dp_id,
+        status,
+        created_dtm,
+        modified_dtm,
+        login_dtm,
+        last_pwd_change_dtm,
+        user_type_id,
+        is_forget_password,
+        allow_otp,
+        otp_cnt,
+        otp_dtm,
+        closed_dtm,
+        app_type,
+        pannumber,
+        dob,
+        entity_nm
+    FROM users
+    WHERE user_id = @UserId ORDER BY created_dtm DESC;
+END;
+
+
+CREATE PROCEDURE SP_GetUserRegistrationByEmail
+    @EmailId VARCHAR(255)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT ur_id, email_id, verification_flag 
+    FROM [nsdl.user_registrations 
+    WHERE email_id = @EmailId;
+END;
+
+
+-- SP_GetUserRegistrationById
+CREATE PROCEDURE SP_GetUserRegistrationById
+    @UrId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT * FROM [nsdl.user_registrations WHERE ur_id = @UrId;
+END;
+
+
+CREATE PROCEDURE SP_GetUserRegistrationId
+    @EmailId VARCHAR(255)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT user_id FROM users WHERE email_id = @EmailId;
+END;
+
+
+CREATE PROCEDURE SP_GetUserRegistrationIdByEmail
+    @EmailId VARCHAR(255),
+    @IsVerified BIT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT ur_id 
+    FROM [nsdl.user_registrations 
+    WHERE email_id = @EmailId 
+    AND verification_flag >= CASE WHEN @IsVerified = 1 THEN 1 ELSE 0 END
+    AND (@IsVerified = 1 OR ddp IS NULL);
+END;
+
+
+CREATE PROCEDURE SP_GetUserRole
+    @UserId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT rm.role_id, rm.role_code, rm.role_name, rm.visible, rm.status
+    FROM roles_master rm
+    JOIN users u ON rm.role_id = u.role_id
+    WHERE u.user_id = @UserId;
+END;
+
+
+CREATE PROCEDURE SP_GetUserRolePermission
+    @UserID INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT u.user_id, r.role_code, STRING_AGG(p.permissioncode, ',') AS permissioncode
+    FROM users u
+    INNER JOIN roles_master r ON u.role_id = r.role_id
+    INNER JOIN rolepermissionmapping p ON r.role_code = p.role_code
+    WHERE u.user_id = @UserID
+    GROUP BY u.user_id, r.role_code;
+END;
+
+
+CREATE PROCEDURE SP_HasActiveSession
+    @UserId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT COUNT(1) 
+    FROM [nsdl.sessions 
+    WHERE user_id = @UserId 
+    AND expires_at > GETDATE() 
+    AND is_active = 1;
+END;
+
+
+CREATE PROCEDURE SP_InsertOTP
+    @UrId INT = NULL,
+    @UserId INT = NULL,
+    @OtpNo VARCHAR(10), -- Adjust the length as needed
+    @ModuleNm VARCHAR(100) = 'General OTP' -- Adjust the length as needed
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO otp_master (ur_id, user_id, otp_no, module_nm, used_yn)
+    VALUES (
+        CASE WHEN @UrId > 0 THEN @UrId ELSE NULL END,
+        CASE WHEN @UserId > 0 THEN @UserId ELSE NULL END,
+        @OtpNo,
+        @ModuleNm,
+        'N'
+    );
+END;
+
+
+-- SP_InsertUserFromRegistration
+CREATE PROCEDURE nsdl.SP_InsertUserFromRegistration
+    @UserName VARCHAR(255),
+    @Password VARCHAR(255),
+    @EmailId VARCHAR(255),
+    @DdpId INT,
+    @ContactNo VARCHAR(20),
+    @Address VARCHAR(255),
+    @RoleId INT,
+    @UserTypeId INT,
+    @EntityName VARCHAR(255),
+    @Dob DATETIME,
+    @UrId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    INSERT INTO [nsdl.users 
+    (user_nm, new_password, email_id, dp_id, contact_no, address, role_id, user_type_id, entity_nm, dob, registration_id)
+    VALUES 
+    (@UserName, @Password, @EmailId, @DdpId, @ContactNo, @Address, @RoleId, @UserTypeId, @EntityName, @Dob, @UrId);
+END;
+
+
+CREATE PROCEDURE SP_InvalidatePreviousSession
+    @UserId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE [nsdl.sessions 
+    SET is_active = 0 
+    WHERE user_id = @UserId AND is_active = 1;
+END;
+
+
+CREATE PROCEDURE SP_IsDuplicateEmailOrPhone
+    @EmailId VARCHAR(255),
+    @Number VARCHAR(20)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT COUNT(*) 
+    FROM [nsdl.user_registrations 
+    WHERE verification_flag >= 1 AND (email_id = @EmailId OR number = @Number);
+END;
+
+
+CREATE PROCEDURE SP_IsSessionValid
+    @UserId INT,
+    @JwtToken VARCHAR(MAX)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT COUNT(1) 
+    FROM [nsdl.sessions 
+    WHERE user_id = @UserId 
+      AND jwt_token = @JwtToken
+      AND expires_at > GETUTCDATE() 
+      AND is_active = 1;
+END;
+
+
+CREATE PROCEDURE SP_MarkOtpAsUsed
+    @UrId INT = NULL,
+    @UserId INT = NULL,
+    @OtpNo VARCHAR(10)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE otp_master
+    SET used_yn = 'Y'
+    WHERE otp_no = @OtpNo
+      AND (ur_id = @UrId OR @UrId IS NULL)
+      AND (user_id = @UserId OR @UserId IS NULL);
+END;
+
+
+CREATE PROCEDURE SP_MarkUserAsForgotPassword
+    @UserId INT,
+    @IsForgotPassword BIT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE users SET is_forget_password = @IsForgotPassword, last_pwd_change_dtm = GETDATE() WHERE user_id = @UserId;
+END;
+
+
+CREATE PROCEDURE nsdl.SP_RegisterUser
+    @UserAs INT,
+    @UserName VARCHAR(255),
+    @EntityName VARCHAR(255),
+    @SpecifyReg VARCHAR(255),
+    @SpecifyOther VARCHAR(255),
+    @LeiRegNo VARCHAR(255),
+    @LeiDetails VARCHAR(255),
+    @GCName VARCHAR(255),
+    @GCRegNo VARCHAR(255),
+    @GCUserName VARCHAR(255),
+    @DOB DATETIME,
+    @City VARCHAR(255),
+    @State VARCHAR(255),
+    @Pincode VARCHAR(20),
+    @Country VARCHAR(255),
+    @CountryCode VARCHAR(10),
+    @Address1 VARCHAR(255),
+    @Address2 VARCHAR(255),
+    @Address3 VARCHAR(255),
+    @Number VARCHAR(20),
+    @AreaCode VARCHAR(10),
+    @EmailId VARCHAR(255),
+    @Password VARCHAR(255),
+    @UserTypeId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    INSERT INTO nsdl.user_registrations (
+        user_as, user_name_fpi_app, entity_name, specify_reg, specify_other,
+        lei_reg_no, lei_details, gc_name, gc_reg_no, gc_name_of_user,
+        dob, city, state, pincode, country, country_code, address_1, address_2, address_3,
+        number, area_code, email_id, new_password, pending_ddp_flag, user_type_id, created_dtm
+    ) VALUES (
+        @UserAs, @UserName, @EntityName, @SpecifyReg, @SpecifyOther,
+        @LeiRegNo, @LeiDetails, @GCName, @GCRegNo, @GCUserName,
+        @DOB, @City, @State, @Pincode, @Country, @CountryCode, @Address1, @Address2, @Address3,
+        @Number, @AreaCode, @EmailId, @Password, @UserTypeId, 1, GETDATE()
+    );
+END;
+
+
+-- SP_SetVerificationFlag
+CREATE PROCEDURE SP_SetVerificationFlag
+    @UserId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE [nsdl.user_registrations
+    SET verification_flag = 1
+    WHERE ur_id = @UserId;
+END;
+
+
+CREATE PROCEDURE SP_StoreSession
+    @SessionId VARCHAR(MAX),
+    @UserId INT,
+    @Token VARCHAR(MAX),
+    @ExpiresAt DATETIME
+AS
+BEGIN
+    SET NOCOUNT ON;
+    INSERT INTO [nsdl.sessions (session_id, user_id, jwt_token, is_active, created_at, expires_at)
+    VALUES (@SessionId, @UserId, @Token, 1, GETDATE(), @ExpiresAt);
+END;
+
+
+
+-- SP_UpdateDDP
+CREATE PROCEDURE SP_UpdateDDP
+    @UserRegistrationId INT,
+    @DdpId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE [nsdl.user_registrations
+    SET ddp = @DdpId, pending_ddp_flag = 0, modified_dtm = GETDATE()
+    WHERE ur_id = @UserRegistrationId;
+END;
+
+
+CREATE PROCEDURE nsdl.SP_UpdatePassword
+    @UserId INT,
+    @Password VARCHAR(255)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE users SET new_password = @Password,is_forget_password = 0, last_pwd_change_dtm = GETDATE() WHERE user_id = @UserId;
+END;
+
+
+
+CREATE PROCEDURE SP_UpdateRegistrationVerificationFlag
+    @UrId INT,
+    @VerificationFlag INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE [nsdl.user_registrations SET verification_flag = @VerificationFlag WHERE ur_id = @UrId;
+END;
+
+
+
+-- SP_UpdateUserRegistrationPassword
+CREATE PROCEDURE nsdl.SP_UpdateUserRegistrationPassword
+    @UserRegistrationId INT,
+    @Password VARCHAR(255)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE [nsdl.user_registrations
+    SET new_password = @Password, modified_dtm = GETDATE()
+    WHERE ur_id = @UserRegistrationId;
+END;
+

@@ -1,0 +1,898 @@
+<div [ngClass]="{'preview-mode': previewMode}">
+  <p-toast></p-toast>
+  <form [formGroup]="formGroup">
+    <div style="margin-bottom: 3rem">
+      <label class="header-labels" for="declarationUndertaking"
+        >A: Declaration & Undertaking
+        <i
+          class="pi pi-info-circle"
+          style="font-size: 14px; color: #748297; margin-left: 1rem"
+          pTooltip="Declaration details"
+          tooltipPosition="right"
+        ></i>
+      </label>
+      <input type="hidden" id="declarationUndertaking" />
+      <div class="common-text">
+        <p class="header-sub-labels">
+          1) We have read and understood the extant Indian laws, rules,
+          regulations including Securities and Exchange Board of India (Foreign
+          Venture Capital Investors) Regulations, 2000, Foreign Exchange
+          Management Act, 1999 (Act No. 42 of 1999) and rules & regulations made
+          thereunder, Depository and Depository Participants Regulations,
+          circulars, guidelines issued therein and shall in relation to our
+          activities as FVCI, at all times, comply with and subject ourselves to
+          any other terms and conditions specified by the Board, Reserve Bank of
+          India (RBI), Depository or any other regulators from time to time.
+        </p>
+        <p class="header-sub-labels">
+          2) We undertake to provide additional information/documents (including
+          KYC documents exempted by the Securities and Exchange Board of India and
+          Reserve Bank of India)/ declarations and undertakings as may be required
+          by you/demand from any regulator/law enforcement agency/exchange without
+          delay to ensure compliance with the Prevention of Money Laundering Act,
+          2002 (Act No. 15 of 2003) and rules and regulations prescribed
+          thereunder, FATF standards and circulars issued from time to time by the
+          Board, RBI or any other regulators in compliance with said requirement.
+        </p>
+        <p class="header-sub-labels">
+          3) We undertake to abide by operational instructions/ directives as may
+          be issued by Securities and Exchange Board of India, Reserve Bank of
+          India or any other authority from time to time under provisions of the
+          Act or any other applicable law.
+        </p>
+        <p class="header-sub-labels">
+          4) We authorize custodian to operate the account through Power of
+          Attorney (PoA) and not to receive credits automatically into our
+          account.
+        </p>
+        <p class="header-sub-labels">
+          5) We authorize custodian to send statement of account in electronic
+          form and we will ensure the confidentiality of the password of the
+          email, as applicable.
+        </p>
+        <p class="header-sub-labels">
+          6) We authorize custodian to maintain appropriate house account details
+          on depository platforms for the purpose of collection of monetary
+          corporate benefits and any other similar activities on our behalf.
+        </p>
+      </div>
+    </div>
+  
+    <div formGroupName="seggregatedPortfolio" style="margin-bottom: 3rem">
+      <label class="header-labels" for="additionalInformation"
+        >B: Additional information
+        <i
+          class="pi pi-info-circle"
+          style="font-size: 14px; color: #748297; margin-left: 1rem"
+          pTooltip="Additional information details"
+          tooltipPosition="right"
+        ></i>
+      </label>
+      <input type="hidden" id="additionalInformation" />
+      <div style="margin-left: 2rem">
+        <div>
+          <p class="header-sub-labels">
+            1. If segregated portfolio is maintained for each sub-funds or share
+            classes / equivalent structures of the applicant, names of such
+            sub-funds or share classes/ equivalent structures that intend to
+            invest in India.
+          </p>
+        </div>
+        <div class="radio">
+          <p-radioButton
+            [formControlName]="'seggregatedPortfolioRadio'"
+            [value]="true"
+            inputId="seggregatedPortfolioRadioYes"
+          >
+          </p-radioButton>
+          <label for="seggregatedPortfolioRadioYes" class="sub-labels">Yes</label>
+          <p-radioButton
+            [formControlName]="'seggregatedPortfolioRadio'"
+            [value]="false"
+            inputId="seggregatedPortfolioRadioNo"
+          >
+          </p-radioButton>
+          <label for="seggregatedPortfolioRadioNo" class="sub-labels">No</label>
+        </div>
+        <div
+          style="display: flex; flex-direction: column; gap: 0.5rem"
+          *ngIf="
+            formGroup.get('seggregatedPortfolio.seggregatedPortfolioRadio')?.value
+          "
+        >
+          <p-table [value]="signatoryRows.controls" showGridlines="true">
+            <ng-template pTemplate="header">
+              <tr>
+                <th class="sub-labels" scope="col">
+                  Name of sub-funds or share classes/ equivalent structures that
+                  intend to invest in India <span>*</span>
+                </th>
+                <th class="sub-labels" scope="col">Actions</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowForm let-i="rowIndex">
+              <tr>
+                <td>
+                  <p-table
+                    [value]="getDetailsFormArray(i).controls"
+                    showGridlines="true"
+                    styleClass="mb-3"
+                  >
+                    <ng-template
+                      pTemplate="body"
+                      let-detail
+                      let-detailIndex="rowIndex"
+                    >
+                      <tr>
+                        <td class="no-border">
+                          <input
+                            type="text"
+                            pInputText
+                            [formControl]="getDetailControl(i, detailIndex)"
+                            style="margin-bottom: 1rem"
+                            placeholder="Enter Sub Class / Share Class Name"
+                          />
+                          <div *ngIf="getOwnerDetails(i).length">
+                            <p-accordion [multiple]="true">
+                              <p-accordion-panel
+                                *ngFor="
+                                  let ownerGroup of getOwnerGroups(i);
+                                  let ownerIndex = index
+                                "
+                                style="margin-bottom: 1rem"
+                              >
+                                <p-accordion-header class="sub-labels">
+                                  <div
+                                    style="
+                                      display: flex;
+                                      width: 100%;
+                                      justify-content: space-between;
+                                      align-items: center;
+                                    "
+                                  >
+                                    <span
+                                      >Authorized Signatory -
+                                      {{ ownerIndex + 1 }}</span
+                                    >
+                                    <div>
+                                      <button
+                                        *ngIf="
+                                          ownerIndex ===
+                                          getOwnerDetails(i).length - 1
+                                        "
+                                        pButton
+                                        icon="pi pi-plus"
+                                        style="margin-right: 1rem"
+                                        class="p-button-rounded p-button-text"
+                                        (click)="addAccordion(i)"
+                                      ></button>
+                                      <button
+                                        pButton
+                                        icon="pi pi-trash"
+                                        class="p-button-rounded p-button-text p-button-danger"
+                                        style="margin-right: 1rem"
+                                        (click)="removeOwner(i, ownerIndex)"
+                                        [disabled]="
+                                          getOwnerDetails(i).length === 1
+                                        "
+                                      ></button>
+                                    </div>
+                                  </div>
+                                </p-accordion-header>
+  
+                                <p-accordion-content>
+                                  <p-table
+                                    showGridlines="true"
+                                    [value]="signatoryData"
+                                  >
+                                    <ng-template pTemplate="header">
+                                      <tr>
+                                        <th scope="col"></th>
+                                        <th class="sub-labels" scope="col">
+                                          Particulars
+                                        </th>
+                                        <th class="sub-labels" scope="col">
+                                          Details
+                                        </th>
+                                      </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-field>
+                                      <tr [formGroup]="ownerGroup">
+                                        <td>{{ field.id }}</td>
+                                        <td>{{ field.text }}</td>
+                                        <td>
+                                          <!-- Render text input -->
+                                          <input
+                                            *ngIf="field.type === 'text'"
+                                            type="text"
+                                            pInputText
+                                            [placeholder]="field.placeholder"
+                                            [style]="{ width: '100%' }"
+                                            [formControlName]="field.id"
+                                          />
+                                          <!-- Render date picker -->
+                                          <p-datepicker
+                                            *ngIf="field.type === 'date'"
+                                            dateFormat="dd/mm/yy"
+                                            [placeholder]="field.placeholder"
+                                            [style]="{ width: '100%' }"
+                                            [formControlName]="field.id"
+                                          ></p-datepicker>
+                                          <!-- Render dropdown for nationality -->
+                                          <p-select
+                                            *ngIf="field.type === 'dropdown'"
+                                            [options]="countries"
+                                            [placeholder]="field.placeholder"
+                                            [formControlName]="field.id"
+                                            optionLabel="name"
+                                            [style]="{ width: '100%' }"
+                                            optionValue="name"
+                                            [filter]="true"
+                                            appendTo="body"
+                                          ></p-select>
+                                        </td>
+                                      </tr>
+                                    </ng-template>
+                                  </p-table>
+                                </p-accordion-content>
+                              </p-accordion-panel>
+                            </p-accordion>
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </td>
+                <td>
+                  <div class="action-buttons">
+                    <button
+                      pButton
+                      icon="pi pi-plus"
+                      class="p-button-rounded p-button-text"
+                      (click)="addSignatory()"
+                    ></button>
+                    <button
+                      pButton
+                      icon="pi pi-trash"
+                      class="p-button-rounded p-button-text p-button-danger"
+                      (click)="removeSignatory(i)"
+                      [disabled]="signatoryRows.length === 1"
+                    ></button>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  
+    <div
+      formGroupName="bankDeclaration"
+      style="margin-bottom: 3rem; margin-left: 2rem"
+    >
+      <div>
+        <label class="header-sub-labels" for="bankDeclarationControl"
+          >2. Bank or subsidiary of bank declaration
+          <i
+            class="pi pi-info-circle"
+            style="font-size: 14px; color: #748297; margin-left: 1rem"
+            pTooltip="Bank declaration info"
+            tooltipPosition="right"
+          ></i>
+        </label>
+        <input type="hidden" id="bankDeclarationControl" />
+        <div class="common-text">
+          <div class="radio">
+            <p-radioButton
+              [value]="'not_bank'"
+              formControlName="bankDeclarationRadio"
+              inputId="notBank"
+            ></p-radioButton>
+            <label for="notBank" class="sub-labels">
+              We are not a bank or a subsidiary of a bank
+            </label>
+          </div>
+          <div class="radio" style="display: block">
+            <div>
+              <p-radioButton
+                [value]="'bank_with_office'"
+                formControlName="bankDeclarationRadio"
+                inputId="bankOfficeInIndia"
+              ></p-radioButton>
+  
+              <label
+                for="bankDeclarationText"
+                class="sub-labels"
+                style="margin-left: 0.7rem"
+              >
+                We are a bank or a subsidiary of a bank and we/group companies do
+                have a/many branch office or representative office in India
+              </label>
+            </div>
+            <div
+              *ngIf="
+                formGroup.get('bankDeclaration.bankDeclarationRadio')?.value ===
+                'bank_with_office'
+              "
+              style="display: block; width: 100%; margin-top: 10px"
+            >
+              <input
+                type="text"
+                formControlName="bankDeclarationText"
+                pInputText
+                placeholder="Enter Details"
+                style="display: block; width: 80%; margin-left: 2.2rem"
+              />
+            </div>
+          </div>
+  
+          <div class="radio">
+            <p-radioButton
+              [value]="'bank_no_office'"
+              formControlName="bankDeclarationRadio"
+              inputId="bankNoIndianOffice"
+            ></p-radioButton>
+            <label for="bankNoIndianOffice" class="sub-labels">
+              We are a bank or a subsidiary of a bank and we/group companies do
+              not have any branch office or representative office in India
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div
+      formGroupName="consentIntermediary"
+      style="margin-bottom: 3rem; margin-left: 2rem"
+    >
+      <div class="radio">
+        <label class="header-sub-labels" for="consentIntermediaryQuestion">
+          3. Does FVCI wish KRAs to seek consent prior to permitting any
+          intermediary to download their KYC information?
+        </label>
+        <input type="hidden" id="consentIntermediaryQuestion" />
+      </div>
+      <div class="radio" style="margin-left: 2rem">
+        <p-radioButton
+          [formControlName]="'consentIntermediaryRadio'"
+          [value]="true"
+          inputId="consentIntermediaryRadioYes"
+        ></p-radioButton>
+        <label for="consentIntermediaryRadioYes" class="sub-labels">Yes</label>
+        <p-radioButton
+          [formControlName]="'consentIntermediaryRadio'"
+          [value]="false"
+          inputId="consentIntermediaryRadioNo"
+        ></p-radioButton>
+        <label for="consentIntermediaryRadioNo" class="sub-labels">No</label>
+      </div>
+      <div
+        *ngIf="
+          formGroup.get('consentIntermediary.consentIntermediaryRadio')?.value
+        "
+        style="margin-left: 2rem"
+      >
+        <p class="sub-labels">If Yes, please provide below information</p>
+        <div class="input-grid">
+          <div class="input-item">
+            <label class="sub-labels" for="consentIntermediaryName">
+              Name of authorized representative of FVCI (optional)
+            </label>
+            <input
+              type="text"
+              formControlName="consentIntermediaryName"
+              pInputText
+              placeholder="Enter Other Name"
+              id="consentIntermediaryName"
+            />
+            <div
+              *ngIf="
+                formGroup.get('consentIntermediary.consentIntermediaryName')
+                  ?.invalid &&
+                formGroup.get('consentIntermediary.consentIntermediaryName')
+                  ?.touched
+              "
+              class="error"
+            >
+              This field is required.
+            </div>
+          </div>
+          <div class="input-item">
+            <label class="sub-labels" for="consentIntermediaryEmail1"
+              >Email id 1 (Optional) :</label
+            >
+            <input
+              type="email"
+              formControlName="consentIntermediaryEmail1"
+              pInputText
+              placeholder="Enter Other Name"
+              id="consentIntermediaryEmail1"
+            />
+            <div
+              *ngIf="
+                formGroup.get('consentIntermediary.consentIntermediaryEmail1')
+                  ?.invalid &&
+                formGroup.get('consentIntermediary.consentIntermediaryEmail1')
+                  ?.touched
+              "
+              class="error"
+            >
+              This field is required.
+            </div>
+          </div>
+        </div>
+        <div class="input-grid">
+          <div class="input-item">
+            <label class="sub-labels" for="consentIntermediaryEmail2"
+              >Email id 2 (Optional) :</label
+            >
+            <input
+              type="email"
+              formControlName="consentIntermediaryEmail2"
+              pInputText
+              placeholder="Enter Other Name"
+              id="consentIntermediaryEmail2"
+            />
+            <div
+              *ngIf="
+                formGroup.get('consentIntermediary.consentIntermediaryEmail2')
+                  ?.invalid &&
+                formGroup.get('consentIntermediary.consentIntermediaryEmail2')
+                  ?.touched
+              "
+              class="error"
+            >
+              This field is required.
+            </div>
+          </div>
+          <div class="input-item">
+            <label class="sub-labels" for="consentIntermediaryEmail3"
+              >Email id 3 (Optional) :</label
+            >
+            <input
+              type="email"
+              formControlName="consentIntermediaryEmail3"
+              pInputText
+              placeholder="Enter Other Name"
+              id="consentIntermediaryEmail3"
+            />
+            <div
+              *ngIf="
+                formGroup.get('consentIntermediary.consentIntermediaryEmail3')
+                  ?.invalid &&
+                formGroup.get('consentIntermediary.consentIntermediaryEmail3')
+                  ?.touched
+              "
+              class="error"
+            >
+              This field is required.
+            </div>
+          </div>
+        </div>
+        <div class="input-grid">
+          <div class="input-item">
+            <label class="sub-labels" for="consentIntermediaryMobile"
+              >Mobile number (optional):</label
+            >
+            <input
+              type="text"
+              formControlName="consentIntermediaryMobile"
+              pInputText
+              placeholder="Enter Other Name"
+              id="consentIntermediaryMobile"
+            />
+            <div
+              *ngIf="
+                formGroup.get('consentIntermediary.consentIntermediaryMobile')
+                  ?.invalid &&
+                formGroup.get('consentIntermediary.consentIntermediaryMobile')
+                  ?.touched
+              "
+              class="error"
+            >
+              This field is required.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div style="margin-bottom: 3rem; margin-left: 2rem">
+      <div style="margin-bottom: 1rem">
+        <label class="header-sub-labels" for="authorizedSignatories">
+          4. Information in respect of Authorized signatories to Form/ senior
+          management of FVCI applicant
+          <span class="required-field">*</span>
+        </label>
+        <input type="hidden" id="authorizedSignatories" />
+      </div>
+      <p-table [value]="infoSaSmApplicantRows.controls" showGridlines="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="sub-labels" scope="col">
+              Information in respect of Authorized signatories to Form/ senior
+              management of FVCI applicant
+            </th>
+            <th class="sub-labels" scope="col">Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowForm let-i="rowIndex">
+          <tr>
+            <td>
+              <p-accordion [value]="'panel-' + i">
+                <p-accordion-panel [value]="'panel-' + i">
+                  <p-accordion-header class="sub-labels">
+                    Authorized Signatory - {{ i + 1 }}
+                  </p-accordion-header>
+                  <p-accordion-content>
+                    <p-table showGridlines="true" [value]="signatoryData">
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <th scope="col"></th>
+                          <th class="sub-labels" scope="col">Particulars</th>
+                          <th class="sub-labels" scope="col">Details</th>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-field>
+                        <tr
+                          [formGroup]="
+                            getInformationOfSaSmFvciApplicantFormGroup(i)
+                          "
+                        >
+                          <td>{{ field.id }}</td>
+                          <td>{{ field.text }}</td>
+                          <td>
+                            <input
+                              *ngIf="field.type === 'text'"
+                              type="text"
+                              pInputText
+                              [placeholder]="field.placeholder"
+                              [formControlName]="field.id"
+                            />
+                            <p-datepicker
+                              *ngIf="field.type === 'date'"
+                              dateFormat="dd/mm/yy"
+                              inputId="buttondisplay"
+                              [showIcon]="true"
+                              class="full-width"
+                              [placeholder]="field.placeholder"
+                              [appendTo]="'body'"
+                              [style]="{ width: '100%' }"
+                              [formControlName]="field.id"
+                            ></p-datepicker>
+                            <p-select
+                              *ngIf="field.type === 'dropdown'"
+                              [options]="countries"
+                              placeholder="Select Country"
+                              [formControlName]="field.id"
+                              optionLabel="name"
+                              optionValue="name"
+                              [filterBy]="'name'"
+                              class="full-width"
+                              [filter]="true"
+                              [showClear]="true"
+                              appendTo="body"
+                            ></p-select>
+                          </td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
+                  </p-accordion-content>
+                </p-accordion-panel>
+              </p-accordion>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button
+                  pButton
+                  icon="pi pi-plus"
+                  class="p-button-rounded p-button-text"
+                  (click)="addInformationOfSaSmFvciApplicant()"
+                ></button>
+                <button
+                  pButton
+                  icon="pi pi-trash"
+                  class="p-button-rounded p-button-text p-button-danger"
+                  (click)="removeInformationOfSaSmFvciApplicant(i)"
+                  [disabled]="infoSaSmApplicantRows.length === 1"
+                ></button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  
+    <div style="margin-top: 2rem">
+      <div class="common-text">
+        <label class="header-sub-labels" for="intermediateMaterialHeader">
+          5. Information regarding Intermediate Material Shareholder/ Owner Entity
+          <span class="required-field">*</span>
+        </label>
+        <input type="hidden" id="intermediateMaterialHeader" />
+      </div>
+      <div style="margin-top: 2rem; margin-left: 4rem" class="common-text">
+        <label class="sub-labels" for="ownershipDetailsDummy">
+          a) Details on the basis of ownership or entitlement:
+        </label>
+        <input type="hidden" id="ownershipDetailsDummy" />
+        <div class="radio">
+          <p-radioButton
+            [formControlName]="'intermediateMaterial'"
+            [value]="true"
+            inputId="intermediateMaterialYes"
+          >
+          </p-radioButton>
+          <label for="ownershipInput1" class="sub-labels">
+            We declare that there is no entity holding any ownership/ entitlement
+            through shares/units, economic benefit participation etc. including
+            cumulative direct / indirect holding held through single or multiple
+            entities.
+          </label>
+        </div>
+        <span class="sub-labels">OR</span>
+        <div class="radio">
+          <p-radioButton
+            [formControlName]="'intermediateMaterial'"
+            [value]="false"
+            inputId="intermediateMaterialNo"
+          >
+          </p-radioButton>
+          <label for="ownershipInput2" class="sub-labels">
+            Details of entities holding
+            <input
+              type="number"
+              pInputText
+              id="ownershipInput2"
+              formControlName="entityHolding"
+              [style]="{
+                'border-top': 'none',
+                'border-left': 'none',
+                'border-right': 'none',
+                'border-bottom-right-radius': '0',
+                'border-bottom-left-radius': '0',
+                width: '50px',
+                border: '2px dashed'
+              }"
+            />% of ownership/ entitlement through shares/units, economic benefit
+            participation etc. including cumulative direct / indirect holding held
+            through single or multiple entities are provided as under:
+          </label>
+        </div>
+      </div>
+    </div>
+  
+    <div
+      style="margin-left: 3rem; margin-bottom: 3rem"
+      *ngIf="formGroup.get('intermediateMaterial')?.value === false"
+    >
+      <p-table [value]="materialShareholderRows.controls" showGridlines="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="sub-labels" scope="col">
+              a) Intermediate Material Shareholder/ Owner Entity
+            </th>
+            <th class="sub-labels" scope="col">Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowForm let-i="rowIndex">
+          <tr>
+            <td>
+              <p-accordion [value]="'panel-' + i">
+                <p-accordion-panel [value]="'panel-' + i">
+                  <p-accordion-header class="sub-labels">
+                    Equity Owner - {{ i + 1 }}
+                  </p-accordion-header>
+                  <p-accordion-content>
+                    <p-table showGridlines="true" [value]="ownerFields">
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <th scope="col"></th>
+                          <th class="sub-labels" scope="col">Particulars</th>
+                          <th class="sub-labels" scope="col">Details</th>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-field>
+                        <tr [formGroup]="getShareholderFormGroup(i)">
+                          <td>{{ field.id }}</td>
+                          <td>{{ field.name }}</td>
+                          <td>
+                            <input
+                              *ngIf="field.type === 'text'"
+                              type="text"
+                              pInputText
+                              [formControlName]="field.id"
+                              placeholder="{{ field.placeHolder }}"
+                            />
+                            <p-select
+                              *ngIf="
+                                field.type === 'dropdown' && field.id != 'f)'
+                              "
+                              [formControlName]="field.id"
+                              placeholder="{{ field.placeHolder }}"
+                              [options]="countries"
+                              [optionLabel]="'name'"
+                              optionValue="name"
+                              class="full-width"
+                              [filter]="true"
+                              [filterBy]="'name'"
+                              [showClear]="true"
+                              appendTo="body"
+                            ></p-select>
+                            <p-select
+                              *ngIf="
+                                field.type === 'dropdown' &&
+                                field.name == 'Individual /Non-Individual'
+                              "
+                              [formControlName]="field.id"
+                              placeholder="{{ field.placeHolder }}"
+                              [options]="types"
+                              [optionLabel]="'label'"
+                              optionValue="value"
+                              class="full-width"
+                              appendTo="body"
+                            ></p-select>
+                          </td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
+                  </p-accordion-content>
+                </p-accordion-panel>
+              </p-accordion>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button
+                  pButton
+                  icon="pi pi-plus"
+                  class="p-button-rounded p-button-text"
+                  (click)="addShareholder()"
+                ></button>
+                <button
+                  pButton
+                  icon="pi pi-trash"
+                  class="p-button-rounded p-button-text p-button-danger"
+                  (click)="removeShareholder(i)"
+                  [disabled]="materialShareholderRows.length === 1"
+                ></button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <div style="margin-left: 2rem; margin-top: 5rem">
+      <div class="common-text">
+        <label class="sub-labels" for="beneficialOwnershipHeader">
+          b) Beneficial Ownership by Control:
+        </label>
+        <input type="hidden" id="beneficialOwnershipHeader" />
+        <div class="radio">
+          <p-radioButton
+            [formControlName]="'beneficialOwnership'"
+            [value]="false"
+            inputId="beneficialOwnershipYes"
+          >
+          </p-radioButton>
+          <label for="beneficialOwnershipYes" class="sub-labels">
+            We declare that there is no entity who controls through means like
+            voting rights, agreements, arrangements, etc.
+          </label>
+        </div>
+        <span class="sub-labels">OR</span>
+        <div class="radio">
+          <p-radioButton
+            [formControlName]="'beneficialOwnership'"
+            [value]="true"
+            inputId="beneficialOwnershipNo"
+          >
+          </p-radioButton>
+          <label for="beneficialOwnershipNo" class="sub-labels">
+            Details of controlling entity is provided as under:
+          </label>
+        </div>
+      </div>
+    </div>
+  
+    <div
+      style="margin-left: 3rem"
+      *ngIf="formGroup.get('beneficialOwnership')?.value"
+    >
+      <p-table [value]="beneficialOwners.controls" showGridlines="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="sub-labels" scope="col">
+              Beneficial Ownership by Control:
+            </th>
+            <th class="sub-labels" scope="col">Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-owner let-i="rowIndex">
+          <tr>
+            <td>
+              <p-accordion [value]="'panel-' + i">
+                <p-accordion-panel [value]="'panel-' + i">
+                  <p-accordion-header class="sub-labels">
+                    Beneficial Owner - {{ i + 1 }}
+                  </p-accordion-header>
+                  <p-accordion-content>
+                    <p-table showGridlines="true" [value]="beneficialFields">
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <th scope="col"></th>
+                          <th class="sub-labels" scope="col">Particulars</th>
+                          <th class="sub-labels" scope="col">Details</th>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-field>
+                        <tr [formGroup]="getBeneficialOwnerFormGroup(i)">
+                          <td>{{ field.id }}</td>
+                          <td>{{ field.name }}</td>
+                          <td>
+                            <input
+                              *ngIf="field.type === 'text'"
+                              type="text"
+                              pInputText
+                              [formControlName]="field.id"
+                              placeholder="{{ field.placeHolder }}"
+                            />
+                            <p-select
+                              *ngIf="
+                                field.type === 'dropdown' && field.id != 'e)'
+                              "
+                              [formControlName]="field.id"
+                              placeholder="{{ field.placeHolder }}"
+                              [options]="countries"
+                              [optionLabel]="'name'"
+                              optionValue="name"
+                              class="full-width"
+                              [filter]="true"
+                              [filterBy]="'name'"
+                              [showClear]="true"
+                              appendTo="body"
+                            ></p-select>
+                            <p-select
+                              *ngIf="
+                                field.type === 'dropdown' && field.id == 'e)'
+                              "
+                              [formControlName]="field.id"
+                              placeholder="{{ field.placeHolder }}"
+                              [options]="types"
+                              [optionLabel]="'label'"
+                              optionValue="value"
+                              class="full-width"
+                              appendTo="body"
+                            ></p-select>
+                          </td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
+                  </p-accordion-content>
+                </p-accordion-panel>
+              </p-accordion>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button
+                  pButton
+                  icon="pi pi-plus"
+                  class="p-button-rounded p-button-text"
+                  (click)="addBeneficialOwner()"
+                ></button>
+                <button
+                  pButton
+                  icon="pi pi-trash"
+                  class="p-button-rounded p-button-text p-button-danger"
+                  (click)="removeBeneficialOwner(i)"
+                  [disabled]="beneficialOwners.length === 1"
+                ></button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </form>
+  <app-loader *ngIf="showLoader"></app-loader>
+</div>

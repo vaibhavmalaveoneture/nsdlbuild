@@ -1,0 +1,17 @@
+.preview-modal-wrapper {
+  width: 60rem;
+}
+
+.preview-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+h3 {
+  padding: 0 2rem;
+}
+
+::ng-deep .preview-table .p-datatable {
+  padding: 0 2rem;
+  margin-bottom: 3rem;
+}

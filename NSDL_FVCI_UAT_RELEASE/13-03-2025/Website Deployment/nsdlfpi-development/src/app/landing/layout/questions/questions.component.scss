@@ -1,0 +1,61 @@
+.faq {
+  /* background: #fff; */
+  padding: 5rem;
+}
+
+.faq h1 {
+  color: #8f1709;
+  border-bottom: 1px solid #8f1709;
+  padding: 1.5rem 0;
+  margin-bottom: 5rem;
+  font-size: 36px;
+}
+
+::ng-deep .p-accordionpanel {
+  margin: 1rem 0;
+}
+
+::ng-deep .p-accordionpanel > .p-accordionheader,
+::ng-deep .p-accordionpanel:first-child > .p-accordionheader,
+::ng-deep
+  .p-accordionpanel:not(.p-disabled).p-accordionpanel-active
+  > .p-accordionheader,
+::ng-deep .p-accordioncontent ::ng-deep .p-accordioncontent-content {
+  // background-color: #f2f0e6 !important;
+  border: 1px solid #000 !important;
+  border-radius: 0 !important;
+}
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 500px), 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+  border-bottom: 1px solid #8f1709;
+  padding-bottom: 4rem;
+}
+
+.action-buttons {
+  margin-top: 3rem;
+  font-size: 1.2rem;
+}
+
+.action-buttons a:first-child {
+  color: #8f1709;
+  background: none;
+  border: none;
+}
+.action-buttons a:last-child {
+  color: #fff;
+  background: #8f1709;
+  border: none;
+  padding: 1rem 1.5rem;
+  border-radius: 21px;
+  margin-left: 1.5rem;
+}
+
+@media screen and (max-width: 425px) {
+  .faq {
+    padding: 5rem 2rem;
+  }
+}

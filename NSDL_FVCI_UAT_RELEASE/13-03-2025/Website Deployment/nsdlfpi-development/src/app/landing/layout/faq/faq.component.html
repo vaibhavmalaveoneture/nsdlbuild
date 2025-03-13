@@ -1,0 +1,58 @@
+<app-header></app-header>
+<main>
+  <div class="faq-container">
+    <div class="faq-header">
+      <h1>Frequently Asked Questions</h1>
+    </div>
+
+    <div class="faq-subheader">
+      <div class="left-content">
+        <p class="questions">We're here to answer all your questions.</p>
+        <div class="right-content">
+          <p class="regulation-text">
+            SEBI (FOREIGN PORTFOLIO INVESTORS) REGULATIONS, 2014
+          </p>
+          <div class="date-download">
+            <p class="update-date">As on: {{ lastUpdated }}</p>
+            <div class="download-btn">
+              <p-button icon="pi pi-download" label="Download FAQ"></p-button>
+            </div>
+          </div>
+        </div>
+
+        <div class="disclaimer">
+          <p>
+            Disclaimer: These FAQs are prepared with a view to guide market
+            participants on SEBI (Foreign Portfolio Investors) Regulations, 2014
+            ("the Regulations"). For full particulars of laws governing the
+            Foreign Portfolio Investors (FPI), please refer to the
+            Acts/Regulations/Guidelines/Circulars etc. appearing under the Legal
+            Framework Section of SEBI website i.e. www.sebi.gov.in. Any queries
+            about the FPI Regime can be addressed to the Investment Management
+            Department, SEBI.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-items-container">
+      <div class="faq-column">
+        <div *ngFor="let item of faqItems.slice(0, 5)" class="faq-item">
+          <a [routerLink]="[item.slug]" class="faq-topic-link">
+            <span>{{ item.title }}</span>
+            <i class="pi pi-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="faq-column">
+        <div *ngFor="let item of faqItems.slice(5)" class="faq-item">
+          <a [routerLink]="[item.slug]" class="faq-topic-link">
+            <span>{{ item.title }}</span>
+            <i class="pi pi-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

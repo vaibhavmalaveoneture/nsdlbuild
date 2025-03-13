@@ -1,0 +1,122 @@
+<p-dialog
+  header="Application Preview"
+  [(visible)]="visible"
+  [modal]="true"
+  [style]="{ width: '80vw', maxWidth: '1200px' }"
+  [maximizable]="true"
+  class="preview-modal-wrapper"
+  (onHide)="onHide()"
+  (onShow)="onShow()"
+  resizable="true"
+>
+  <app-loader *ngIf="isLoading"></app-loader>
+
+  <div *ngIf="!isLoading && applicationData" [appPreviewMode]="true">
+    <div class="preview-section">
+      <h3>EKYC</h3>
+      <app-fvci-form
+        [applicationId]="applicationId"
+        [applicationData]="applicationData"
+        [previewMode]="true"
+      >
+      </app-fvci-form>
+    </div>
+
+    <div class="preview-section">
+      <h3>FVCI Registration</h3>
+      <app-registration-form
+        [applicationId]="applicationId"
+        [applicationData]="applicationData"
+        [previewMode]="true"
+      >
+      </app-registration-form>
+    </div>
+
+    <div class="preview-section">
+      <h3>Annexure to CAF</h3>
+      <app-annexure-form
+        [applicationId]="applicationId"
+        [applicationData]="applicationData"
+        [previewMode]="true"
+      >
+      </app-annexure-form>
+    </div>
+
+    <div class="preview-section">
+      <h3>Documents</h3>
+      <!-- Mandatory Documents Table -->
+      <p-table class="preview-table" [value]="['POA', 'POI']" [showGridlines]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th scope="col">Document Type</th>
+            <th scope="col">Selected Document</th>
+            <th scope="col">Name</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-docType>
+          <tr>
+            <td>{{ docType }}</td>
+            <td>
+              <span *ngIf="getKycDocument(docType) as document">
+                {{ document.documentIdentifier || "Pending" }}
+              </span>
+            </td>
+            <td>
+              <span *ngIf="getKycDocument(docType) as document">
+                <span *ngIf="document.documentPath">
+                  
+                  {{ document.documentPath.split('/').pop() || "Document" }}
+                </span>
+                <span *ngIf="!document.documentPath">Pending</span>
+              </span>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+      <!-- Additional Documents Table -->
+      <h3 class="mt-3">Additional Supporting Documents</h3>
+       <p-table class="preview-table" [value]="additionalDocuments" [showGridlines]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th scope="col">Document Description</th>
+            <th scope="col">Name</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-addDoc>
+          <tr>
+            <td>{{ addDoc.documentDescription }}</td>
+            <td>
+              <span *ngIf="addDoc.documentPath">
+                
+                {{ addDoc.documentPath.split('/').pop() || "Document" }}
+              </span>
+              <span *ngIf="!addDoc.documentPath">Pending</span>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <div class="preview-section">
+      <h3>Declaration and Undertaking</h3>
+      <app-declaration-undertaking
+        [applicationId]="applicationId"
+        [applicationData]="applicationData"
+        [previewMode]="true"
+      >
+      </app-declaration-undertaking>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && !applicationData" class="no-data-message">
+    <p>No application data available for preview.</p>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="preview-actions">
+      <button class="secondary-button" (click)="onHide()">Close</button>
+      <button class="primary-button">Submit Application</button>
+    </div>
+  </ng-template>
+</p-dialog>

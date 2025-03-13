@@ -1,0 +1,78 @@
+.menu {
+  padding: 0 2rem 0.4rem 2rem;
+  margin-top: 5px;
+  width: -webkit-fill-available;
+  z-index: -1;
+}
+
+#step-select {
+  width: 200px !important;
+}
+
+.menu h1,
+h2,
+h4 {
+  margin: 0;
+}
+
+.menu-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.new-app {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.steps {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5rem;
+}
+
+.button-wrapper {
+  display: flex;
+  gap: 1rem;
+}
+
+.steps-button {
+  background-color: rgba(143, 23, 9, 0.05);
+  border-radius: 50%;
+  border: none;
+  font-weight: 600;
+  color: #8f1709;
+  height: 35px;
+  width: 35px;
+  cursor: pointer;
+}
+
+.steps-button.active {
+  background-color: #8f1709;
+  color: white;
+}
+
+.text-color {
+  color: #6b778c;
+  font-size: 14px;
+}
+
+.new-app h1 {
+  color: #344054;
+  font-weight: 500;
+  font-size: 24px;
+}
+
+.steps h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #2c3e5d;
+}
+
+.step-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}

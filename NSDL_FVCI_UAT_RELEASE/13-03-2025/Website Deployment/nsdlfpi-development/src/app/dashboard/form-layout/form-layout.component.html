@@ -1,0 +1,50 @@
+<app-menu
+  [applicationId]="applicationId"
+  (stepChanged)="updateCurrentStep($event)"
+  (onButtonClick)="onButtonClick()"
+></app-menu>
+<div class="card-wrapper">
+  <p-card class="annexure-card">
+    <div class="form-header">
+      <p id="form-title">
+        <span>{{ currentComponent }}</span>
+        Application Form for Grant of Certificate of Registration as Foreign
+        Venture Capital Investor (FVCI)
+      </p>
+      <div class="wrapper">
+        <img [src]="download" alt="download button" />
+        <a href="">Download</a>
+      </div>
+    </div>
+    <p-scrollpanel [style]="{ width: '100%', height: '65vh' }">
+      <app-fvci-form
+        *ngIf="currentStep == 1"
+        [applicationId]="applicationId"
+      ></app-fvci-form>
+      <app-registration-form
+        *ngIf="currentStep == 2"
+        [applicationId]="applicationId"
+      ></app-registration-form>
+      <app-annexure-form
+        *ngIf="currentStep == 3"
+        [applicationId]="applicationId"
+      ></app-annexure-form>
+      <app-documents-upload
+        *ngIf="currentStep == 4"
+        [applicationId]="applicationId"
+      ></app-documents-upload>
+      <app-declaration-undertaking
+        *ngIf="currentStep == 5"
+        [applicationId]="applicationId"
+      ></app-declaration-undertaking>
+      <!-- <app-preview
+        *ngIf="currentStep == 6"
+        [applicationId]="applicationId"
+      ></app-preview>
+      <app-acknowledgement
+        *ngIf="currentStep == 7"
+        [applicationId]="applicationId"
+      ></app-acknowledgement> -->
+    </p-scrollpanel>
+  </p-card>
+</div>

@@ -1,0 +1,87 @@
+<div class="menu">
+  <p-breadcrumb class="max-w-full" [model]="crumbItems">
+    <ng-template #item let-item>
+      <ng-container *ngIf="item.route; else elseBlock">
+        <a [routerLink]="item.route" class="p-breadcrumb-item-link">
+          <span [ngClass]="[item.icon ? item.icon : '', 'text-color']"></span>
+          <span class="text-color">{{ item.label }}</span>
+        </a>
+      </ng-container>
+      <ng-template #elseBlock>
+        <a [href]="item.url">
+          <span class="text-color">{{ item.label }}</span>
+        </a>
+      </ng-template>
+    </ng-template>
+  </p-breadcrumb>
+
+  <div class="menu-text">
+    <div class="steps">
+      <div class="step-button">
+        <button
+          *ngFor="let button of buttons; let i = index"
+          (click)="setActive(i)"
+          class="steps-button"
+          [class.active]="active === i"
+        >
+          {{ button.label }}
+        </button>
+      </div>
+      <h3>Step {{ currentStep }} of {{ totalSteps }}</h3>
+      <p-select
+        id="step-select"
+        [options]="selectItems"
+        [(ngModel)]="selectedItem"
+        (onChange)="onStepSelect()"
+        optionLabel="name"
+        placeholder="EKYC"
+        [appendTo]="'body'"
+      ></p-select>
+      <circle-progress
+        [percent]="completionPercentage"
+        [radius]="20"
+        [outerStrokeWidth]="3"
+        [innerStrokeWidth]="1"
+        [showBackground]="false"
+        [startFromZero]="false"
+        [outerStrokeColor]="'#8f1709'"
+        [titleColor]="'#8f1709'"
+        [unitsColor]="'#8f1709'"
+        [space]="-3"
+        [innerStrokeWidth]="26"
+        [titleFontSize]="'16'"
+        [innerStrokeColor]="'#8F17090D'"
+        [animation]="true"
+        [animationDuration]="800"
+        [showSubtitle]="false"
+        [subtitle]="'%'"
+      >
+      </circle-progress>
+
+      <div class="button-wrapper">
+        <button class="primary-button" (click)="openPreview()">Submit</button>
+
+        <!-- Save Button with Loading and Success States -->
+        <button
+          class="primary-button"
+          [disabled]="isSaving"
+          (click)="saveForm()"
+        >
+          Save
+          <ng-container *ngIf="isSaving">Saving...</ng-container>
+          <ng-container *ngIf="!isSaving && saveSuccess">Saved!</ng-container>
+        </button>
+
+        <button class="primary-button">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+<app-loader *ngIf="isSaving"></app-loader>
+
+<!-- Display Preview Component -->
+<app-display-preview
+  *ngIf="displayPreview"
+  [(visible)]="displayPreview"
+  [applicationId]="applicationId"
+></app-display-preview>

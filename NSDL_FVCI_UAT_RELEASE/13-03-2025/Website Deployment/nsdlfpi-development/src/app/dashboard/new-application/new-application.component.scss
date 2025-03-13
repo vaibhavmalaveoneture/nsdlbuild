@@ -1,0 +1,31 @@
+.flex {
+  display: flex;
+}
+
+.content-wrapper {
+  position: relative; /* Add positioning context */
+  transition: margin-left 0.3s ease, width 0.3s ease; /* Only transition these properties */
+  margin-top: 3rem;
+  margin-left: 16vw; /* Start with margin equal to sidebar width */
+  width: calc(100% - 16vw); /* Initial width calculation */
+  padding: 0 20px; /* Add horizontal padding for content */
+  box-sizing: border-box; /* Include padding in width calculation */
+}
+
+.content-wrapper.expanded {
+  margin-left: 20px; /* Small margin when sidebar is collapsed */
+  width: calc(100% - 20px); /* Almost full width */
+}
+
+@media (max-width: 768px) {
+  .content-wrapper {
+    margin: 3rem 0 0 0;
+    width: 100%;
+    padding: 0 15px;
+  }
+
+  .content-wrapper.expanded {
+    margin-left: 0;
+    width: 100%;
+  }
+}

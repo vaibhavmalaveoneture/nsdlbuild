@@ -1,0 +1,162 @@
+<form>
+  <div class="add-document">
+    <p-toast></p-toast>
+
+    <!-- Fixed Documents Table: POA and POI -->
+    <p-table [value]="['POA', 'POI']" [showGridlines]="true">
+      <ng-template pTemplate="header">
+        <tr>
+          <th scope="col">Document Type</th>
+          <th scope="col">Selected Document</th>
+          <th scope="col">Upload Document</th>
+          <th scope="col">Status</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-docType>
+        <tr>
+          <!-- Document Type -->
+          <td>{{ docType }}</td>
+          <!-- View-Only Selected Document (from API) -->
+          <td>
+            <span *ngIf="getKycDocument(docType) as document">
+              {{ document.documentIdentifier || "Pending" }}
+            </span>
+          </td>
+          <!-- Upload/View/Delete Controls -->
+          <td>
+            <ng-container
+              *ngIf="getKycDocument(docType)?.documentPath; else uploadTemplate"
+            >
+              <button
+                pButton
+                label="View"
+                icon="pi pi-eye"
+                (click)="viewDocument(getKycDocument(docType)?.documentPath)"
+                class="p-button-sm p-button-info"
+              ></button>
+              <button
+                pButton
+                label="Delete"
+                icon="pi pi-trash"
+                (click)="
+                  deleteFixedDocument(getKycDocument(docType)?.documentPath)
+                "
+                class="p-button-sm p-button-danger ml-2"
+              ></button>
+            </ng-container>
+            <ng-template #uploadTemplate>
+              <p-fileupload
+                name="document"
+                [customUpload]="true"
+                [auto]="false"
+                (uploadHandler)="uploadFixedFile()"
+                accept="application/pdf"
+                maxFileSize="1000000"
+                mode="advanced"
+                (onSelect)="onFixedSelect($event, docType)"
+                (onClear)="onFixedClear($event, docType)"
+                [disabled]="!isQuestion14Complete || disableMandatoryUploads"
+              ></p-fileupload>
+            </ng-template>
+          </td>
+          <!-- Status: Display Pending/Uploaded -->
+          <td>
+            <span *ngIf="getKycDocument(docType) as document">
+              {{ document.documentPath ? "Uploaded" : "Pending" }}
+            </span>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <!-- Note for fixed documents -->
+    <p>
+      (Note For PAN Application of Non-individual applicants, Certificate of FPI
+      Registration granted by Designated Depository Participant (DDP) on behalf
+      of SEBI shall be forwarded to Income Tax Department of India for PAN
+      allotment.)
+    </p>
+    <p>Note: Only PDF format is allowed.</p>
+    <p *ngIf="!isQuestion14Complete" style="color: red; font-weight: bold">
+      Document uploads for POA and POI are disabled. Please complete Step 1,
+      Question 14 to enable uploads.
+    </p>
+
+    <!-- Additional Supporting Documents Section -->
+    <h3>Additional Supporting Documents</h3>
+    <p-table [value]="additionalDocuments" [showGridlines]="true">
+      <ng-template pTemplate="header">
+        <tr>
+          <th scope="col">Document Description</th>
+          <th scope="col">Upload / View / Delete</th>
+          <th scope="col">Status</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-addDoc let-i="rowIndex">
+        <tr>
+          <!-- Document Description -->
+          <td>
+            <input
+              type="text"
+              pInputText
+              placeholder="Enter document description"
+              [disabled]="addDoc.documentPath"
+              [(ngModel)]="addDoc.documentDescription"
+              name="docDesc{{ i }}"
+            />
+          </td>
+          <!-- Controls: Upload if not uploaded; View & Delete if already uploaded -->
+          <td>
+            <ng-container *ngIf="addDoc.documentPath; else uploadTemplate">
+              <button
+                pButton
+                type="button"
+                label="View"
+                icon="pi pi-eye"
+                (click)="viewDocument(addDoc.documentPath)"
+                class="p-button-sm p-button-info"
+              ></button>
+              <button
+                pButton
+                type="button"
+                label="Delete"
+                icon="pi pi-trash"
+                (click)="deleteFixedDocument(addDoc)"
+                class="p-button-sm p-button-danger ml-2"
+              ></button>
+            </ng-container>
+            <ng-template #uploadTemplate>
+              <p-fileupload
+                name="additionalDocument"
+                [customUpload]="true"
+                [auto]="false"
+                accept="application/pdf"
+                maxFileSize="1000000"
+                mode="advanced"
+                (onSelect)="onAdditionalSelect($event, i)"
+                (onClear)="onAdditionalClear($event, i)"
+                (uploadHandler)="uploadAdditionalDocument(i)"
+              ></p-fileupload>
+            </ng-template>
+          </td>
+          <!-- Status -->
+          <td>
+            <span>{{ addDoc.documentPath ? "Uploaded" : "Pending" }}</span>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <!-- Button to add an additional document row -->
+    <div class="button-wrapper">
+      <button
+        class="primary-button"
+        type="button"
+        (click)="addAdditionalDocument()"
+        [disabled]="!canAddAdditionalDocument()"
+      >Add Additional Document</button>
+    </div>
+  </div>
+</form>
+<p-confirmDialog [style]="{ width: '450px' }" />
+<app-loader *ngIf="showLoader"></app-loader>

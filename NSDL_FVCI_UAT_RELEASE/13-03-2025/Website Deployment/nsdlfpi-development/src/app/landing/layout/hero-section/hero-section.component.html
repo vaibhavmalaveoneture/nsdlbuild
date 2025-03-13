@@ -1,0 +1,142 @@
+<!-- <div class="hero">
+  <div class="hero-wrapper">
+    <div class="hero-content">
+      <h1 class="hero-title">
+        Empowering Investments with Unmatched Compliance and Technology.
+      </h1>
+      <button
+        pButton
+        pRipple
+        icon="pi pi-arrow-right"
+        iconPos="right"
+        label="Find Out More"
+        class="find-out"
+        routerLink="/auth/register"
+      ></button>
+      <div class="button-wrapper">
+        <a routerLink="/auth/register" class="background"> Register Now</a>
+        <a routerLink="auth/register" class="transparent">
+          Register to access FPI portal
+        </a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img [src]="hero" alt="hero section image" />
+    </div>
+  </div>
+
+  <div class="fpi-wrapper">
+    <div *ngIf="!isLoading">
+      <h3>Used by {{ formatNumber(totalFPICount) }}+ FPIs worldwide</h3>
+      <div class="countries">
+        <div class="country" *ngIf="c1">
+          <img [src]="c1" alt="country flag" (error)="onImageError($event, '/assets/cif_rom.png')" />
+        </div>
+        <div class="country" *ngIf="c2">
+          <img [src]="c2" alt="country flag" (error)="onImageError($event, '/assets/cif_arg.png')" />
+        </div>
+        <div class="country" *ngIf="c3">
+          <img [src]="c3" alt="country flag" (error)="onImageError($event, '/assets/cif_aus.png')" />
+        </div>
+        <div class="country" *ngIf="c4">
+          <img [src]="c4" alt="country flag" (error)="onImageError($event, '/assets/cif_can.png')" />
+        </div>
+        <div class="country" *ngIf="c5">
+          <img [src]="c5" alt="country flag" (error)="onImageError($event, '/assets/cif_den.png')" />
+        </div>
+        <div class="country" *ngIf="c6">
+          <img [src]="c6" alt="country flag" (error)="onImageError($event, '/assets/cif_ind.png')" />
+        </div>
+        <div class="country" *ngIf="c7">
+          <img [src]="c7" alt="country flag" (error)="onImageError($event, '/assets/cif_hai.png')" />
+        </div>
+        <div class="country" *ngIf="c8">
+          <img [src]="c8" alt="country flag" (error)="onImageError($event, '/assets/cif_hon.png')" />
+        </div>
+        <div class="country" *ngIf="c9">
+          <img [src]="c9" alt="country flag" (error)="onImageError($event, '/assets/cif_egy.png')" />
+        </div>
+        <div class="country" *ngIf="c10">
+          <img [src]="c10" alt="country flag" (error)="onImageError($event, '/assets/cif_iran.png')" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div class="hero">
+  <div class="hero-wrapper">
+    <div class="hero-content">
+      <h1 class="hero-title">
+        Empowering Investments with Unmatched Compliance and Technology.
+      </h1>
+      <button
+        pButton
+        pRipple
+        icon="pi pi-arrow-right"
+        iconPos="right"
+        label="Find Out More"
+        class="find-out"
+        routerLink="/auth/register"
+      ></button>
+      <div class="button-wrapper">
+        <a routerLink="/auth/register" class="background"> Register Now</a>
+        <a routerLink="auth/register" class="transparent">
+          Register to access FPI portal
+        </a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img [src]="hero" alt="hero section image" />
+    </div>
+  </div>
+
+  <div class="fpi-wrapper">
+    <!-- Loading state -->
+    <!-- <div *ngIf="isLoading" class="loading-indicator">
+      <span>Loading data...</span>
+    </div> -->
+
+    <!-- Error state -->
+    <!-- <div *ngIf="!isLoading && loadError" class="error-message">
+      <span>Unable to load data. Using default values.</span>
+    </div> -->
+    
+    <!-- Content when data is loaded -->
+    <div *ngIf="!isLoading">
+      <h3>Used by {{ formatNumber(totalFPICount) }}+ FPIs worldwide</h3>
+      <div class="countries">
+        <div class="country" *ngIf="c1 && countryData[0]" pTooltip="{{ countryData[0].name }}: {{ countryData[0].total_count }}" tooltipPosition="top">
+          <img [src]="c1" alt="{{ countryData[0]?.name || 'country' }} flag" (error)="onImageError($event, '/assets/cif_rom.png')" />
+        </div>
+        <div class="country" *ngIf="c2 && countryData[1]" pTooltip="{{ countryData[1].name }}: {{ countryData[1].total_count }}" tooltipPosition="top">
+          <img [src]="c2" alt="{{ countryData[1]?.name || 'country' }} flag" (error)="onImageError($event, '/assets/cif_arg.png')" />
+        </div>
+        <div class="country" *ngIf="c3 && countryData[2]" pTooltip="{{ countryData[2].name }}: {{ countryData[2].total_count }}" tooltipPosition="top">
+          <img [src]="c3" alt="{{ countryData[2]?.name || 'country' }} flag" (error)="onImageError($event, '/assets/cif_aus.png')" />
+        </div>
+        <div class="country" *ngIf="c4 && countryData[3]" pTooltip="{{ countryData[3].name }}: {{ countryData[3].total_count }}" tooltipPosition="top">
+          <img [src]="c4" alt="{{ countryData[3]?.name || 'country' }} flag" (error)="onImageError($event, '/assets/cif_can.png')" />
+        </div>
+        <div class="country" *ngIf="c5 && countryData[4]" pTooltip="{{ countryData[4].name }}: {{ countryData[4].total_count }}" tooltipPosition="top">
+          <img [src]="c5" alt="{{ countryData[4]?.name || 'country' }} flag" (error)="onImageError($event, '/assets/cif_den.png')" />
+        </div>
+        <div class="country" *ngIf="c6 && countryData[5]" pTooltip="{{ countryData[5].name }}: {{ countryData[5].total_count }}" tooltipPosition="top">
+          <img [src]="c6" alt="{{ countryData[5]?.name || 'country' }} flag" (error)="onImageError($event, '/assets/cif_ind.png')" />
+        </div>
+        <div class="country" *ngIf="c7 && countryData[6]" pTooltip="{{ countryData[6].name }}: {{ countryData[6].total_count }}" tooltipPosition="top">
+          <img [src]="c7" alt="{{ countryData[6]?.name || 'country' }} flag" (error)="onImageError($event, '/assets/cif_hai.png')" />
+        </div>
+        <div class="country" *ngIf="c8 && countryData[7]" pTooltip="{{ countryData[7].name }}: {{ countryData[7].total_count }}" tooltipPosition="top">
+          <img [src]="c8" alt="{{ countryData[7]?.name || 'country' }} flag" (error)="onImageError($event, '/assets/cif_hon.png')" />
+        </div>
+        <div class="country" *ngIf="c9 && countryData[8]" pTooltip="{{ countryData[8].name }}: {{ countryData[8].total_count }}" tooltipPosition="top">
+          <img [src]="c9" alt="{{ countryData[8]?.name || 'country' }} flag" (error)="onImageError($event, '/assets/cif_egy.png')" />
+        </div>
+        <div class="country" *ngIf="c10 && countryData[9]" pTooltip="{{ countryData[9].name }}: {{ countryData[9].total_count }}" tooltipPosition="top">
+          <img [src]="c10" alt="{{ countryData[9]?.name || 'country' }} flag" (error)="onImageError($event, '/assets/cif_iran.png')" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

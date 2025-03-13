@@ -1,0 +1,17 @@
+<app-navbar></app-navbar>
+<main class="flex">
+  <app-sidebar
+    class="sidebar"
+    (sidebarToggled)="onSidebarToggled($event)"
+  ></app-sidebar>
+  <div class="content-wrapper" [class.expanded]="sidebarCollapsed">
+    <ng-container [ngSwitch]="currentStep">
+      <app-form-layout
+        [applicationId]="applicationId"
+        [currentStep]="currentStep"
+      >
+        <router-outlet></router-outlet>
+      </app-form-layout>
+    </ng-container>
+  </div>
+</main>
